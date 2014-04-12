@@ -17,6 +17,7 @@ public class Widok_Utworz_Zdarzenia implements ActionListener, WindowListener{
 	
 	private Widok_Utworz widokUtworz;
 	
+	
 	public Widok_Utworz_Zdarzenia(Widok_Utworz _widokUtworz) {
 		widokUtworz = _widokUtworz;
 		

@@ -43,6 +43,7 @@ public class Widok_Gry extends JFrame {
 	public Widok_Glowny widokGlowny;
 	public Widok_Wynikow widokWynikow;
 
+	
 	private JPanel contentPane;
 	public JMenuItem mnI_Skapituluj;
 	public JMenuItem mnI_ZaproponujRewanz;

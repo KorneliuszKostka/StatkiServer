@@ -14,6 +14,7 @@ public class Widok_OpisAplikacji_Zdarzenia implements ActionListener, WindowList
 	
 	private Widok_Opis_aplikacji widokOpisAplikacji;
 	
+	
 	public Widok_OpisAplikacji_Zdarzenia(Widok_Opis_aplikacji _widokOpisAplikacji) {
 		widokOpisAplikacji = _widokOpisAplikacji;
 		

@@ -36,6 +36,7 @@ public class Widok_Dolacz extends JFrame {
 	public Widok_Glowny widokGlowny;
 	public Widok_Rozmiesc widokRozmiesc;
 	
+	
 	private JPanel contentPane;
 	public JMenuItem mnI_Skapituluj;
 	public JMenuItem mnI_ZaproponujRewanz;

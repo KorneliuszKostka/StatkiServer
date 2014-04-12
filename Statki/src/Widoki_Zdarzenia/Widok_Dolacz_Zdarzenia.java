@@ -19,6 +19,7 @@ public class Widok_Dolacz_Zdarzenia implements ActionListener, WindowListener{
 	
 	private Widok_Dolacz widokDolacz;
 	
+	
 	public Widok_Dolacz_Zdarzenia(Widok_Dolacz _widokDolacz) {
 		widokDolacz = _widokDolacz;
 		

@@ -13,6 +13,7 @@ public class Widok_OpisTworcow_Zdarzenia implements ActionListener, WindowListen
 	
 	private Widok_Opis_tworcow widokOpisTworcow;
 	
+	
 	public Widok_OpisTworcow_Zdarzenia(Widok_Opis_tworcow _widokOpisTworcow) {
 		widokOpisTworcow = _widokOpisTworcow;
 		

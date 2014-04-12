@@ -26,6 +26,7 @@ public class Widok_Ustawien extends JFrame {
 	public Widok_Glowny widokGlowny;
 	public Widok_Ustawien_Zdarzenia widokUstawienZdarzenia;
 	
+	
 	private JPanel contentPane;
 	public JMenuItem mnI_oTworcach;
 	public JMenuItem mnI_oGrze;

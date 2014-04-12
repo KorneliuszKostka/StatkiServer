@@ -21,6 +21,7 @@ public class Widok_Wynikow_Zdarzenia implements ActionListener, WindowListener, 
 	
 	private Widok_Wynikow widokWynikow;
 	
+	
 	public Widok_Wynikow_Zdarzenia(Widok_Wynikow _widokWynikow) {
 		widokWynikow = _widokWynikow;
 		

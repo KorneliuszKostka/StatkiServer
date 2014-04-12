@@ -17,6 +17,7 @@ public class Widok_Glowny_Zdarzenia implements ActionListener, WindowListener, M
 	
 	private Widok_Glowny widokGlowny;
 	
+	
 	public Widok_Glowny_Zdarzenia(Widok_Glowny _widokGlowny) {
 		widokGlowny = _widokGlowny;
 		

@@ -13,6 +13,7 @@ public class Widok_Ustawien_Zdarzenia implements ActionListener, WindowListener{
 	
 	private Widok_Ustawien widokUstawien;
 	
+	
 	public Widok_Ustawien_Zdarzenia(Widok_Ustawien _widokUstawien) {
 		widokUstawien = _widokUstawien;
 		
