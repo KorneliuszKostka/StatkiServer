@@ -21,6 +21,7 @@ import javax.swing.JTextArea;
 import javax.swing.JLabel;
 
 import Widoki_Zdarzenia.Widok_OpisAplikacji_Zdarzenia;
+import java.awt.Color;
 
 public class Widok_Opis_aplikacji extends JFrame {
 
@@ -136,13 +137,15 @@ public class Widok_Opis_aplikacji extends JFrame {
 		JPanel p_OpisGry = new JPanel();
 		p_OpisGry.setBounds(10, 158, 494, 160);
 		contentPane.add(p_OpisGry);
-		p_OpisGry.setLayout(null);
+		p_OpisGry.setLayout(new BorderLayout(0, 0));
 		
 		ta_OpisGry = new JTextArea();
+		ta_OpisGry.setWrapStyleWord(true);
+		ta_OpisGry.setForeground(Color.BLACK);
+		ta_OpisGry.setEditable(false);
 		ta_OpisGry.setFont(new Font("Verdana", Font.BOLD, 15));
 		ta_OpisGry.setOpaque(false);
 		ta_OpisGry.setText("Tutaj będzie opis gry");
-		ta_OpisGry.setBounds(10, 11, 474, 138);
 		p_OpisGry.add(ta_OpisGry);
 		
 		JPanel p_Przyciski = new JPanel();

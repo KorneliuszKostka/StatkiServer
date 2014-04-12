@@ -124,35 +124,37 @@ public class Widok_Opis_tworcow extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lb_ObrazekGry = new JLabel("Tutaj będzie obrazek oraz twórcy gry");
-		lb_ObrazekGry.setFont(new Font("Verdana", Font.BOLD, 15));
-		lb_ObrazekGry.setBounds(10, 11, 494, 136);
-		contentPane.add(lb_ObrazekGry);
-		
 		JPanel p_OpisTworcow = new JPanel();
-		p_OpisTworcow.setLayout(null);
 		p_OpisTworcow.setBounds(10, 158, 494, 160);
 		contentPane.add(p_OpisTworcow);
+		p_OpisTworcow.setLayout(new BorderLayout(0, 0));
 		
 		JTextArea ta_OpisTworcow = new JTextArea();
 		ta_OpisTworcow.setText("Tutaj będzie opis twórców");
 		ta_OpisTworcow.setOpaque(false);
 		ta_OpisTworcow.setFont(new Font("Verdana", Font.BOLD, 15));
-		ta_OpisTworcow.setBounds(10, 11, 474, 138);
 		p_OpisTworcow.add(ta_OpisTworcow);
 		
-		JPanel panel = new JPanel();
-		panel.setLayout(null);
-		panel.setOpaque(false);
-		panel.setBounds(10, 326, 494, 55);
-		contentPane.add(panel);
+		JPanel p_przyciski = new JPanel();
+		p_przyciski.setLayout(null);
+		p_przyciski.setOpaque(false);
+		p_przyciski.setBounds(10, 326, 494, 55);
+		contentPane.add(p_przyciski);
 		
 		btn_WrocDoWyboruKategorii = new JButton("Wróć do wyboru kategorii");
 		btn_WrocDoWyboruKategorii.setFont(new Font("Verdana", Font.BOLD, 10));
 		btn_WrocDoWyboruKategorii.setBounds(138, 11, 235, 33);
-		panel.add(btn_WrocDoWyboruKategorii);
+		p_przyciski.add(btn_WrocDoWyboruKategorii);
+		
+		JPanel p_obrazekGry = new JPanel();
+		p_obrazekGry.setBounds(10, 11, 494, 136);
+		contentPane.add(p_obrazekGry);
+		p_obrazekGry.setLayout(new BorderLayout(0, 0));
+		
+		JLabel label = new JLabel("Tutaj będzie obrazek oraz twórcy gry");
+		label.setFont(new Font("Verdana", Font.BOLD, 15));
+		p_obrazekGry.add(label);
 		
 		widokOpisTworcowZdarzenia = new Widok_OpisTworcow_Zdarzenia(this);
 	}
-
 }

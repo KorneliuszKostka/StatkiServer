@@ -55,8 +55,8 @@ public class Widok_Utworz_Zdarzenia implements ActionListener, WindowListener{
 
 	@Override
 	public void windowActivated(WindowEvent e) {
-		widokUtworz.lb_naglowek2_TwojeIP.setText("Twoje IP: " + pobierzIpHosta());
-		widokUtworz.lb_naglowek2_TwojeIP.setForeground(Color.RED);
+		widokUtworz.tf_naglowek2_TwojeIP.setText("Twoje IP: " + pobierzIpHosta());
+		widokUtworz.tf_naglowek2_TwojeIP.setForeground(Color.RED);
 	}
 
 	@Override

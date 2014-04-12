@@ -124,24 +124,24 @@ public class Widok_Ustawien extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JPanel panel = new JPanel();
-		panel.setBounds(10, 11, 494, 293);
-		contentPane.add(panel);
-		panel.setLayout(new BorderLayout(0, 0));
+		JPanel p_ustawienia = new JPanel();
+		p_ustawienia.setBounds(10, 11, 494, 293);
+		contentPane.add(p_ustawienia);
+		p_ustawienia.setLayout(new BorderLayout(0, 0));
 		
 		JLabel lblTuBdUstawienia = new JLabel("Tu będą ustawienia lokalne");
-		panel.add(lblTuBdUstawienia, BorderLayout.CENTER);
+		p_ustawienia.add(lblTuBdUstawienia, BorderLayout.CENTER);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setLayout(null);
-		panel_1.setOpaque(false);
-		panel_1.setBounds(10, 315, 494, 55);
-		contentPane.add(panel_1);
+		JPanel p_przyciski = new JPanel();
+		p_przyciski.setLayout(null);
+		p_przyciski.setOpaque(false);
+		p_przyciski.setBounds(10, 315, 494, 55);
+		contentPane.add(p_przyciski);
 		
 		btn_WrocDoWyboruKategorii = new JButton("Wróć do wyboru kategorii");
 		btn_WrocDoWyboruKategorii.setFont(new Font("Verdana", Font.BOLD, 10));
 		btn_WrocDoWyboruKategorii.setBounds(138, 11, 235, 33);
-		panel_1.add(btn_WrocDoWyboruKategorii);
+		p_przyciski.add(btn_WrocDoWyboruKategorii);
 		
 		widokUstawienZdarzenia = new Widok_Ustawien_Zdarzenia(this);
 	}
