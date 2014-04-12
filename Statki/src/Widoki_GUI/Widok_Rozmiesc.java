@@ -84,7 +84,7 @@ public class Widok_Rozmiesc extends JFrame {
 		      e.printStackTrace();
 		    }
 		
-		
+
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setSize(520, 430);
 		Toolkit zestaw = Toolkit.getDefaultToolkit(); //narzedzie dzieki ktoremu mozna pobrac rozdzielczosc

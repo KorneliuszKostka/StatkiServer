@@ -27,7 +27,6 @@ public class Widok_Opis_tworcow extends JFrame {
 	public Widok_OpisTworcow_Zdarzenia widokOpisTworcowZdarzenia;
 	public Widok_Glowny widokGlowny;
 	
-	
 	private JPanel contentPane;
 	public JMenuItem mnI_Wyjscie;
 	public JMenuItem mnI_UstawieniaLokalne;

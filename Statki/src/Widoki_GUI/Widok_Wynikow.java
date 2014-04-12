@@ -43,7 +43,6 @@ public class Widok_Wynikow extends JFrame {
 	public Widok_Wynikow_Zdarzenia widokWynikowZdarzenia;
 	public Widok_Gry widokGry;
 	
-	
 	private JPanel contentPane;
 	public JTextField tf_Wiadomosc;
 	private JPanel p_poleGry_GRACZ;

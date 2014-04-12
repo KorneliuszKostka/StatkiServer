@@ -31,7 +31,6 @@ public class Widok_Glowny extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
-	
 	private Widok_Glowny_Zdarzenia widokGlowny_zdarzenia;
 	public Widok_Dolacz widokDolacz;
 	public Widok_Utworz widokUtworz;

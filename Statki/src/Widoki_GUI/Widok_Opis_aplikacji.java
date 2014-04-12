@@ -28,7 +28,6 @@ public class Widok_Opis_aplikacji extends JFrame {
 	public Widok_Glowny widokGlowny;
 	public Widok_OpisAplikacji_Zdarzenia widokOpisAplikacjiZdarzenia;
 	
-	
 	private JPanel contentPane;
 	public JMenuItem mnI_InstrukcjaObslugi;
 	public JMenuItem mnI_oGrze;
