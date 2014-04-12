@@ -71,6 +71,7 @@ public class Widok_Rozmiesc_Zdarzenia implements ActionListener, WindowListener,
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
+		
 		if(e.getSource() == widokRozmiesc.mnI_UstawieniaLokalne)
 		{
 			widokRozmiesc.widokGlowny.widokUstawien.widokUstawienZdarzenia.setOknoMacierzyste("OknoRozmiesc");

@@ -87,7 +87,6 @@ public class Widok_Gry_Zdarzenia implements ActionListener, WindowListener, Mous
 	public void windowActivated(WindowEvent e) {
 	}
 
-	
 	@Override
 	public void windowDeactivated(WindowEvent e) {
 	}

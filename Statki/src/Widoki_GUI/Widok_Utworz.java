@@ -35,7 +35,6 @@ public class Widok_Utworz extends JFrame {
 	private Widok_Utworz_Zdarzenia widokUtworzZdarzenia;
 	public Widok_Glowny widokGlowny;
 	
-	
 	public JMenuItem mnI_UstawieniaLokalne;
 	public JMenuItem mnI_Wyjscie;
 	public JMenuItem mnI_oTworcach;
