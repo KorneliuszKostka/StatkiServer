@@ -13,6 +13,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.JButton;
 
@@ -34,7 +35,10 @@ import java.awt.Color;
 import javax.swing.border.TitledBorder;
 import javax.swing.DefaultComboBoxModel;
 
+import Statki.Gracz;
+import Statki.Host;
 import Widoki_Zdarzenia.Widok_Gry_Zdarzenia;
+
 import java.awt.Insets;
 
 public class Widok_Gry extends JFrame {
@@ -42,6 +46,8 @@ public class Widok_Gry extends JFrame {
 	public Widok_Gry_Zdarzenia widokGryZdarzenia;
 	public Widok_Glowny widokGlowny;
 	public Widok_Wynikow widokWynikow;
+	public Host host;
+	public Gracz gracz;
 
 	private JPanel contentPane;
 	public JMenuItem mnI_Skapituluj;
@@ -73,6 +79,8 @@ public class Widok_Gry extends JFrame {
 	private JPanel p_Cyfry_GRACZ;
 	private JPanel p_Cyfry_PRZECIWNIK;
 	private JPanel p_Litery_PRZECIWNIK;
+	
+	public Timer t_czat;
 
 	/**
 	 * Launch the application.
@@ -81,7 +89,7 @@ public class Widok_Gry extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Widok_Gry frame = new Widok_Gry(null);
+					Widok_Gry frame = new Widok_Gry(null, null, null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -93,9 +101,13 @@ public class Widok_Gry extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Widok_Gry(Widok_Glowny _widokGlowny) {
+	public Widok_Gry(Widok_Glowny _widokGlowny, Host _host, Gracz _gracz) {
 		
 		widokGlowny = _widokGlowny;
+		if(_host != null)
+			host = _host;
+		if(_gracz != null)
+			gracz = _gracz;
 		
 		setTitle("Statki v.1.0 Beta | SkyGames - okno gry");
 		setResizable(false);
@@ -278,11 +290,11 @@ public class Widok_Gry extends JFrame {
 		p_Cyfry_GRACZ.setBounds(25, 134, 180, 20);
 		p_obszarGracza.add(p_Cyfry_GRACZ);
 		
-		widokGryZdarzenia = new Widok_Gry_Zdarzenia(this);
-		
 		p_poleGryGracza.setLayout(null);
 		p_Cyfry_GRACZ.setLayout(null);
 		p_Litery_GRACZ.setLayout(null);
+		
+		widokGryZdarzenia = new Widok_Gry_Zdarzenia(this);
 		
 		widokGryZdarzenia.stworzPolaGry(widokGryZdarzenia.lb_polaGry_GRACZ, 18, 18, 18, p_poleGryGracza, p_Litery_GRACZ, p_Cyfry_GRACZ, 17, 15);
 		widokGryZdarzenia.stworzPolaGry(widokGryZdarzenia.lb_polaGry_PRZECIWNIK, 23, 23, 24, p_poleGryPrzeciwnika, p_Litery_PRZECIWNIK, p_Cyfry_PRZECIWNIK, 18, 18);

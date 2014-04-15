@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
+import java.net.UnknownHostException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -13,19 +15,23 @@ import javax.swing.JOptionPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.text.MaskFormatter;
 
+import Statki.Gracz;
 import Widoki_GUI.Widok_Dolacz;
 
 public class Widok_Dolacz_Zdarzenia implements ActionListener, WindowListener{
 	
+	public Gracz gracz;
 	private Widok_Dolacz widokDolacz;
 	
 	public Widok_Dolacz_Zdarzenia(Widok_Dolacz _widokDolacz) {
 		widokDolacz = _widokDolacz;
+		gracz = new Gracz();
 		
 		widokDolacz.addWindowListener(this);
 		
 		widokDolacz.btn_RozpocznijRozmieszczanieStatkow.addActionListener(this);
 		widokDolacz.btn_WrocDoWyboruKategorii.addActionListener(this);
+		widokDolacz.btn_Polacz.addActionListener(this);
 		widokDolacz.mnI_UstawieniaLokalne.addActionListener(this);
 		widokDolacz.mnI_Wyjscie.addActionListener(this);
 		widokDolacz.mnI_InstrukcjaObslugi.addActionListener(this);
@@ -104,6 +110,26 @@ public class Widok_Dolacz_Zdarzenia implements ActionListener, WindowListener{
 			widokDolacz.widokGlowny.widokOpisTworcow.widokOpisTworcowZdarzenia.setOknoMacierzyste("OknoDolacz");
 			pokazOknoOpisTworcow();
 		}
+		if(e.getSource() == widokDolacz.btn_Polacz)
+		{
+			polacz();
+		}
+	}
+	
+	public String usunSpacje(String _tekst)
+	{
+		String tekst = "";
+		for(int i=0;i<_tekst.length();i++)
+			if(!_tekst.substring(i, i+1).equals(" "))
+				tekst = tekst + _tekst.substring(i, i+1);
+		return tekst;
+	}
+	
+	public void polacz()
+	{
+		gracz.polacz(usunSpacje(widokDolacz.ftf_IpSerwera.getText()), widokDolacz.lb_komunikat_TRWALACZENIE);
+		if(gracz.polaczenieOK)
+			widokDolacz.btn_RozpocznijRozmieszczanieStatkow.setEnabled(true);
 	}
 	
 	private void wyjscie()
@@ -145,6 +171,7 @@ public class Widok_Dolacz_Zdarzenia implements ActionListener, WindowListener{
 	private void pokazOknoRozmiesc()
 	{
 		widokDolacz.setVisible(false);
+		widokDolacz.widokRozmiesc.typUsera = widokDolacz.ftf_NazwaGracza.getText().trim();
 		widokDolacz.widokRozmiesc.setVisible(true);
 	}
 }

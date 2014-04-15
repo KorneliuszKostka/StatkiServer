@@ -34,6 +34,7 @@ public class Widok_Utworz extends JFrame {
 	
 	private Widok_Utworz_Zdarzenia widokUtworzZdarzenia;
 	public Widok_Glowny widokGlowny;
+	public Widok_Rozmiesc widokRozmiesc;
 	
 	public JMenuItem mnI_UstawieniaLokalne;
 	public JMenuItem mnI_Wyjscie;
@@ -45,6 +46,8 @@ public class Widok_Utworz extends JFrame {
 	public JButton btn_RozpocznijRozmieszczanieStatkw;
 	public JComboBox cb_awatarGracza;
 	public JFormattedTextField ftf_NazwaGracza;
+	public JLabel lb_tekst_OczekiwanieNaPrzeciwnika;
+	public JButton btn_utworzSerwer;
 
 	/**
 	 * Launch the application.
@@ -158,7 +161,7 @@ public class Widok_Utworz extends JFrame {
 		
 		JPanel p_daneGracza = new JPanel();
 		p_daneGracza.setOpaque(false);
-		p_daneGracza.setBounds(10, 167, 265, 145);
+		p_daneGracza.setBounds(10, 167, 265, 155);
 		getContentPane().add(p_daneGracza);
 		p_daneGracza.setLayout(null);
 		
@@ -180,7 +183,7 @@ public class Widok_Utworz extends JFrame {
         }
 
         cb_awatarGracza = new JComboBox(intArray);
-        cb_awatarGracza.setBounds(122, 54, 126, 80);
+        cb_awatarGracza.setBounds(122, 40, 126, 80);
         ComboBoxRenderer renderer= new ComboBoxRenderer(images);
         renderer.setPreferredSize(new Dimension(150, 80));
         cb_awatarGracza.setRenderer(renderer);
@@ -190,17 +193,19 @@ public class Widok_Utworz extends JFrame {
 		
 		JLabel lb_tekst_Awatar = new JLabel("Awatar:");
 		lb_tekst_Awatar.setFont(new Font("Verdana", Font.PLAIN, 11));
-		lb_tekst_Awatar.setBounds(10, 53, 103, 80);
+		lb_tekst_Awatar.setBounds(10, 39, 103, 80);
 		p_daneGracza.add(lb_tekst_Awatar);
 		
 		JPanel p_OczekiwanieNaPrzeciwnika = new JPanel();
 		p_OczekiwanieNaPrzeciwnika.setOpaque(false);
-		p_OczekiwanieNaPrzeciwnika.setBounds(285, 167, 219, 145);
+		p_OczekiwanieNaPrzeciwnika.setBounds(285, 167, 219, 155);
 		getContentPane().add(p_OczekiwanieNaPrzeciwnika);
 		p_OczekiwanieNaPrzeciwnika.setLayout(new BorderLayout(0, 0));
 		
-		JLabel lb_tekst_OczekiwanieNaPrzeciwnika = new JLabel("Oczekiwanie na przeciwnika");
-		lb_tekst_OczekiwanieNaPrzeciwnika.setFont(new Font("Verdana", Font.PLAIN, 11));
+		lb_tekst_OczekiwanieNaPrzeciwnika = new JLabel("Oczekiwanie na przeciwnika...");
+		lb_tekst_OczekiwanieNaPrzeciwnika.setVisible(false);
+		lb_tekst_OczekiwanieNaPrzeciwnika.setHorizontalAlignment(SwingConstants.CENTER);
+		lb_tekst_OczekiwanieNaPrzeciwnika.setFont(new Font("Verdana", Font.BOLD, 10));
 		p_OczekiwanieNaPrzeciwnika.add(lb_tekst_OczekiwanieNaPrzeciwnika, BorderLayout.CENTER);
 		
 		JPanel panel_2 = new JPanel();
@@ -211,13 +216,19 @@ public class Widok_Utworz extends JFrame {
 		
 		btn_WrocDoWyboruKategorii = new JButton("Wróć do wyboru kategorii");
 		btn_WrocDoWyboruKategorii.setFont(new Font("Verdana", Font.BOLD, 10));
-		btn_WrocDoWyboruKategorii.setBounds(10, 0, 235, 33);
+		btn_WrocDoWyboruKategorii.setBounds(10, 11, 235, 33);
 		panel_2.add(btn_WrocDoWyboruKategorii);
 		
 		btn_RozpocznijRozmieszczanieStatkw = new JButton("Rozpocznij rozmieszczanie statków");
+		btn_RozpocznijRozmieszczanieStatkw.setEnabled(false);
 		btn_RozpocznijRozmieszczanieStatkw.setFont(new Font("Verdana", Font.BOLD, 10));
-		btn_RozpocznijRozmieszczanieStatkw.setBounds(259, 0, 235, 33);
+		btn_RozpocznijRozmieszczanieStatkw.setBounds(259, 11, 235, 33);
 		panel_2.add(btn_RozpocznijRozmieszczanieStatkw);
+		
+		btn_utworzSerwer = new JButton("Utwórz");
+		btn_utworzSerwer.setFont(new Font("Verdana", Font.BOLD, 10));
+		btn_utworzSerwer.setBounds(166, 132, 82, 23);
+		p_daneGracza.add(btn_utworzSerwer);
 		
 		widokUtworzZdarzenia = new Widok_Utworz_Zdarzenia(this);
 		
@@ -230,6 +241,10 @@ public class Widok_Utworz extends JFrame {
 		ftf_NazwaGracza.setFocusLostBehavior(JFormattedTextField.COMMIT);
 		ftf_NazwaGracza.setBounds(123, 9, 125, 20);
 		p_daneGracza.add(ftf_NazwaGracza);
+		
+		
+		widokRozmiesc = new Widok_Rozmiesc(widokGlowny, widokUtworzZdarzenia.host, null);
+		
 	}
 	
 	protected static ImageIcon createImageIcon(String path) {

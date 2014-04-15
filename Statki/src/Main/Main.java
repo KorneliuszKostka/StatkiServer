@@ -2,7 +2,7 @@ package Main;
 
 import java.awt.EventQueue;
 
-import Widoki_GUI.Widok_Glowny;
+import Statki.*;
 
 public class Main {
 
@@ -10,13 +10,12 @@ public class Main {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Widok_Glowny frame = new Widok_Glowny();
-					frame.setVisible(true);
+					Gra gra = new Gra();
+					gra.widokGlowny.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
-		
 	}
 }

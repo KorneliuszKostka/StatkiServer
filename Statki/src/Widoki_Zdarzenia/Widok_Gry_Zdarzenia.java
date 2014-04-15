@@ -10,26 +10,36 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
+import java.net.UnknownHostException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
 
+import Statki.Gracz;
+import Statki.Host;
 import Widoki_GUI.Widok_Gry;
 
-public class Widok_Gry_Zdarzenia implements ActionListener, WindowListener, MouseListener, ItemListener{
+public class Widok_Gry_Zdarzenia extends Thread implements ActionListener, WindowListener, MouseListener, ItemListener{
 	private Widok_Gry widokGry;
+	
+	public Host host;
+	public Gracz gracz;
 	
 	public Widok_Gry_Zdarzenia(Widok_Gry _widokGry) {
 		widokGry = _widokGry;
+		gracz = new Gracz();
+		host = new Host();
 		
 		widokGry.addWindowListener(this);
 		
 		widokGry.btn_Przerwa.addActionListener(this);
 		widokGry.btn_Skapituluj.addActionListener(this);
-		widokGry.btn_Wyslij.addMouseListener(this);
+		widokGry.btn_Wyslij.addActionListener(this);
 		widokGry.mnI_Skapituluj.addActionListener(this);
 		widokGry.mnI_ZaproponujRewanz.addActionListener(this);
 		widokGry.mnI_UstawieniaLokalne.addActionListener(this);
@@ -40,6 +50,19 @@ public class Widok_Gry_Zdarzenia implements ActionListener, WindowListener, Mous
 		
 		widokGry.cb_szablonyWiadomosci.addItemListener(this);
 		widokGry.cb_RodzajStrzalu.addItemListener(this);
+		
+		czatAktwyny = true;
+		this.start();
+	}
+	
+	boolean czatAktwyny;
+	public void run()
+	{
+		while(czatAktwyny)
+		{
+			System.out.println("Pobieranie wlaczone!!!");
+			pobierzWiadomosc();
+		}
 	}
 
 	@Override
@@ -64,6 +87,9 @@ public class Widok_Gry_Zdarzenia implements ActionListener, WindowListener, Mous
 
 	@Override
 	public void windowOpened(WindowEvent e) {
+		zaladujCzat ();
+		//widokGry.t_czat = new Timer(500, this);
+		//widokGry.t_czat.start();
 	}
 
 	@Override
@@ -130,7 +156,77 @@ public class Widok_Gry_Zdarzenia implements ActionListener, WindowListener, Mous
 		}
 		if(e.getSource() == widokGry.btn_Wyslij)
 		{
+			wyslijWiadomosc();
+		}
+		if(e.getSource() == widokGry.t_czat)
+		{
 			
+		}
+	}
+	
+	public void pobierzWiadomosc()
+	{
+		if(widokGry.host != null)
+		{
+			if(widokGry.host.polaczenieOK)
+			{
+				try {
+					widokGry.host.odbierzWiadomosc(widokGry.ta_CzatGraczy);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		if(widokGry.gracz != null)
+		{
+			if(widokGry.gracz.polaczenieOK)
+			{
+				try {
+					widokGry.gracz.odbierzWiadomosc(widokGry.ta_CzatGraczy);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	public void wyslijWiadomosc()
+	{
+		if(widokGry.host != null)
+		{
+			try {
+				widokGry.host.wyslijWiadomosc(widokGry.tf_TrescWiadomosci);
+				System.out.println("Wyslal host!");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		if(widokGry.gracz != null)
+		{
+			try {
+				widokGry.gracz.wyslijWiadomosc(widokGry.tf_TrescWiadomosci);
+				System.out.println("Wyslal klient!");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void zaladujCzat ()
+	{
+		if(widokGry.host != null)
+		{
+			widokGry.ta_CzatGraczy.setText("Czat aktywny z komputerem o nr IP: "+
+					widokGry.ta_CzatGraczy.getText()+widokGry.host.pobierzIpKlienta()+"\n");
+		}
+		if(widokGry.gracz != null)
+		{
+			widokGry.ta_CzatGraczy.setText("Czat aktywny z komputerem o nr IP: "+
+					widokGry.ta_CzatGraczy.getText()+widokGry.gracz.pobierzIpSerwera()+"\n");
 		}
 	}
 

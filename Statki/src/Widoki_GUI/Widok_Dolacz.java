@@ -28,6 +28,8 @@ import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JComboBox;
 
+import Statki.Gracz;
+import Statki.Host;
 import Widoki_Zdarzenia.Widok_Dolacz_Zdarzenia;
 
 public class Widok_Dolacz extends JFrame {
@@ -49,11 +51,13 @@ public class Widok_Dolacz extends JFrame {
 	
 	public JButton btn_RozpocznijRozmieszczanieStatkow;
 	public JButton btn_WrocDoWyboruKategorii;
+	public JButton btn_Polacz;
 	
 	public JComboBox cb_AwatarGracza;
 	
 	public JFormattedTextField ftf_NazwaGracza;
 	public JFormattedTextField ftf_IpSerwera;
+	
 	
 	/**
 	 * Launch the application.
@@ -76,8 +80,6 @@ public class Widok_Dolacz extends JFrame {
 	 */
 	public Widok_Dolacz(Widok_Glowny _widokGlowny) {
 		widokGlowny = _widokGlowny;
-		
-		widokRozmiesc = new Widok_Rozmiesc(widokGlowny);
 		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setSize(520, 430);
@@ -131,6 +133,7 @@ public class Widok_Dolacz extends JFrame {
 		p_przyciski.add(btn_WrocDoWyboruKategorii);
 		
 		btn_RozpocznijRozmieszczanieStatkow = new JButton("Rozpocznij rozmieszczanie statków");
+		btn_RozpocznijRozmieszczanieStatkow.setEnabled(false);
 		btn_RozpocznijRozmieszczanieStatkow.setFont(new Font("Verdana", Font.BOLD, 10));
 		btn_RozpocznijRozmieszczanieStatkow.setBounds(250, 11, 235, 33);
 		p_przyciski.add(btn_RozpocznijRozmieszczanieStatkow);
@@ -144,15 +147,15 @@ public class Widok_Dolacz extends JFrame {
 		
 		
 		JLabel lb_tekst_IPSERWERA = new JLabel("IP Serwera:");
-		lb_tekst_IPSERWERA.setBounds(10, 26, 80, 20);
+		lb_tekst_IPSERWERA.setBounds(10, 11, 80, 20);
 		p_daneSerwerUzytkownik.add(lb_tekst_IPSERWERA);
 		
 		JLabel lb_tekst_NAZWAGRACZA = new JLabel("Nazwa Gracza:");
-		lb_tekst_NAZWAGRACZA.setBounds(10, 73, 80, 17);
+		lb_tekst_NAZWAGRACZA.setBounds(10, 58, 80, 17);
 		p_daneSerwerUzytkownik.add(lb_tekst_NAZWAGRACZA);
 		
 		JLabel lb_tekst_AWATAR = new JLabel("Awatar:");
-		lb_tekst_AWATAR.setBounds(10, 115, 80, 80);
+		lb_tekst_AWATAR.setBounds(10, 100, 80, 80);
 		p_daneSerwerUzytkownik.add(lb_tekst_AWATAR);
 		
 		
@@ -169,7 +172,7 @@ public class Widok_Dolacz extends JFrame {
 
         //Create the combo box.
         cb_AwatarGracza = new JComboBox(intArray);
-		cb_AwatarGracza.setBounds(99, 115, 126, 80);
+		cb_AwatarGracza.setBounds(99, 100, 126, 80);
         ComboBoxRenderer renderer= new ComboBoxRenderer(images);
         renderer.setPreferredSize(new Dimension(150, 80));
         cb_AwatarGracza.setRenderer(renderer);
@@ -184,9 +187,9 @@ public class Widok_Dolacz extends JFrame {
 		p_DolaczDoGry.add(p_TrwaLaczenie);
 		p_TrwaLaczenie.setLayout(new BorderLayout(0, 0));
 		
-		lb_komunikat_TRWALACZENIE = new JLabel("TRWA ŁĄCZENIE Z SERWEREM..");
-		lb_komunikat_TRWALACZENIE.setVisible(false);
-		lb_komunikat_TRWALACZENIE.setFont(new Font("Verdana", Font.BOLD, 13));
+		lb_komunikat_TRWALACZENIE = new JLabel("");
+		lb_komunikat_TRWALACZENIE.setHorizontalAlignment(SwingConstants.CENTER);
+		lb_komunikat_TRWALACZENIE.setFont(new Font("Verdana", Font.BOLD, 10));
 		p_TrwaLaczenie.add(lb_komunikat_TRWALACZENIE, BorderLayout.CENTER);
 		
 		JMenuBar mb_pasekMenu = new JMenuBar();
@@ -231,6 +234,11 @@ public class Widok_Dolacz extends JFrame {
 		mnI_InstrukcjaObslugi = new JMenuItem("Instrukcja obsługi");
 		mn_Pomoc.add(mnI_InstrukcjaObslugi);
 		
+		btn_Polacz = new JButton("Połącz");
+		btn_Polacz.setFont(new Font("Verdana", Font.BOLD, 10));
+		btn_Polacz.setBounds(118, 191, 117, 31);
+		p_daneSerwerUzytkownik.add(btn_Polacz);
+		
 		widokDolaczZdarzenia = new Widok_Dolacz_Zdarzenia(this);
 		
 		String maska = "";
@@ -238,7 +246,7 @@ public class Widok_Dolacz extends JFrame {
 		ftf_IpSerwera = new JFormattedTextField();
 		ftf_IpSerwera.setFormatterFactory(new DefaultFormatterFactory(widokDolaczZdarzenia.stworzFormat(maska)));
 		ftf_IpSerwera.setFocusLostBehavior(JFormattedTextField.COMMIT);
-		ftf_IpSerwera.setBounds(100, 26, 125, 20);
+		ftf_IpSerwera.setBounds(100, 11, 125, 20);
 		p_daneSerwerUzytkownik.add(ftf_IpSerwera);
 		
 		maska = "";
@@ -248,9 +256,10 @@ public class Widok_Dolacz extends JFrame {
 		ftf_NazwaGracza = new JFormattedTextField();
 		ftf_NazwaGracza.setFormatterFactory(new DefaultFormatterFactory(widokDolaczZdarzenia.stworzFormat(maska)));
 		ftf_NazwaGracza.setFocusLostBehavior(JFormattedTextField.COMMIT);
-		ftf_NazwaGracza.setBounds(100, 73, 125, 20);
+		ftf_NazwaGracza.setBounds(100, 58, 125, 20);
 		p_daneSerwerUzytkownik.add(ftf_NazwaGracza);
 		
+		widokRozmiesc = new Widok_Rozmiesc(widokGlowny, null, widokDolaczZdarzenia.gracz);	
 	}
 	
 protected static ImageIcon createImageIcon(String path) {

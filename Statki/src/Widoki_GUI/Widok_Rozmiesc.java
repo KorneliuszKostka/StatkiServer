@@ -24,6 +24,8 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 
+import Statki.Gracz;
+import Statki.Host;
 import Widoki_Zdarzenia.Widok_Rozmiesc_Zdarzenia;
 
 import java.awt.event.ActionListener;
@@ -34,6 +36,8 @@ public class Widok_Rozmiesc extends JFrame {
 	public Widok_Rozmiesc_Zdarzenia widokRozmiescZdarzenia;
 	public Widok_Glowny widokGlowny;
 	public Widok_Gry widokGry;
+	public Host host;
+	public Gracz gracz;
 	
 	private JPanel contentPane;
 	
@@ -63,7 +67,7 @@ public class Widok_Rozmiesc extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Widok_Rozmiesc frame = new Widok_Rozmiesc(null);
+					Widok_Rozmiesc frame = new Widok_Rozmiesc(null, null, null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -72,9 +76,14 @@ public class Widok_Rozmiesc extends JFrame {
 		});
 	}
 
-	public Widok_Rozmiesc(Widok_Glowny _widokGlowny) {
+	public String typUsera;
+	public Widok_Rozmiesc(Widok_Glowny _widokGlowny, Host _host, Gracz _gracz) {
 		
 		widokGlowny = _widokGlowny;
+		if(_host != null)
+			host = _host;
+		if(_gracz != null)
+			gracz = _gracz;
 	
 		setTitle("Statki v.1.0 Beta | SkyGames - rozmieszczenie statków");
 		setResizable(false);
@@ -221,6 +230,6 @@ public class Widok_Rozmiesc extends JFrame {
 		p_Cyfry.setLayout(null);
 		p_polaGry.setLayout(null);
 		
-		widokGry = new Widok_Gry(widokGlowny);
+		widokGry = new Widok_Gry(widokGlowny, host, gracz);
 	}
 }

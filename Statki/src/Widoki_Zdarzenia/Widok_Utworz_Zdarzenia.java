@@ -5,20 +5,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import javax.swing.JOptionPane;
 import javax.swing.text.MaskFormatter;
 
+import Statki.Host;
 import Widoki_GUI.Widok_Utworz;
 
 public class Widok_Utworz_Zdarzenia implements ActionListener, WindowListener{
 	
 	private Widok_Utworz widokUtworz;
+	public Host host;
 	
 	public Widok_Utworz_Zdarzenia(Widok_Utworz _widokUtworz) {
 		widokUtworz = _widokUtworz;
+		host = new Host();
 		
 		widokUtworz.addWindowListener(this);
 		
@@ -29,11 +33,13 @@ public class Widok_Utworz_Zdarzenia implements ActionListener, WindowListener{
 		widokUtworz.mnI_oTworcach.addActionListener(this);
 		widokUtworz.mnI_UstawieniaLokalne.addActionListener(this);
 		widokUtworz.mnI_Wyjscie.addActionListener(this);
+		widokUtworz.btn_utworzSerwer.addActionListener(this);
 	}
 
 	@Override
 	public void windowOpened(WindowEvent e) {
-
+		//System.out.println("OTWARTO OKNO!!!");
+		//utworzSerwer();
 	}
 
 	@Override
@@ -84,7 +90,24 @@ public class Widok_Utworz_Zdarzenia implements ActionListener, WindowListener{
 			widokUtworz.widokGlowny.widokOpisTworcow.widokOpisTworcowZdarzenia.setOknoMacierzyste("OknoUtworz");
 			pokazOknoOpisTworcow();
 		}
-		
+		if(e.getSource() == widokUtworz.btn_RozpocznijRozmieszczanieStatkw)
+		{
+			pokazOknoRozmiesc();
+		}
+		if(e.getSource() == widokUtworz.btn_utworzSerwer)
+		{
+			utworzSerwer();
+		}
+	}
+	
+	public void utworzSerwer()
+	{
+		host.stworzHost(widokUtworz.lb_tekst_OczekiwanieNaPrzeciwnika);
+		if(host.polaczenieOK)
+		{
+			widokUtworz.btn_RozpocznijRozmieszczanieStatkw.setEnabled(true);
+			widokUtworz.lb_tekst_OczekiwanieNaPrzeciwnika.setVisible(true);
+		}
 	}
 	
 	public void powrotDoOknaGlownego()
@@ -148,5 +171,11 @@ public class Widok_Utworz_Zdarzenia implements ActionListener, WindowListener{
 	{
 		widokUtworz.setVisible(false);
 		widokUtworz.widokGlowny.widokOpisTworcow.setVisible(true);
+	}
+	
+	private void pokazOknoRozmiesc()
+	{
+		widokUtworz.setVisible(false);
+		widokUtworz.widokRozmiesc.setVisible(true);
 	}
 }
