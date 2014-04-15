@@ -81,7 +81,7 @@ public class Widok_Dolacz_Zdarzenia implements ActionListener, WindowListener{
 			powrtoDoOknaGlownego();
 		if(e.getSource() == widokDolacz.btn_RozpocznijRozmieszczanieStatkow)
 		{
-			
+			pokazOknoRozmiesc();
 		}
 		if(e.getSource() == widokDolacz.mnI_Wyjscie)
 			wyjscie();
@@ -140,5 +140,11 @@ public class Widok_Dolacz_Zdarzenia implements ActionListener, WindowListener{
 	{
 		widokDolacz.setVisible(false);
 		widokDolacz.widokGlowny.widokOpisTworcow.setVisible(true);
+	}
+	
+	private void pokazOknoRozmiesc()
+	{
+		widokDolacz.setVisible(false);
+		widokDolacz.widokRozmiesc.setVisible(true);
 	}
 }

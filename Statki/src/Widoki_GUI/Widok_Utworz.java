@@ -18,6 +18,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.SwingConstants;
 
@@ -39,7 +40,7 @@ public class Widok_Utworz extends JFrame {
 	public JMenuItem mnI_oTworcach;
 	public JMenuItem mnI_oGrze;
 	public JMenuItem mnI_InstrukcjaObslugi;
-	public JLabel lb_naglowek2_TwojeIP;
+	public JTextField tf_naglowek2_TwojeIP;
 	public JButton btn_WrocDoWyboruKategorii;
 	public JButton btn_RozpocznijRozmieszczanieStatkw;
 	public JComboBox cb_awatarGracza;
@@ -139,11 +140,14 @@ public class Widok_Utworz extends JFrame {
 		lb_naglowek1.setBounds(0, 0, 495, 47);
 		p_naglowekOkna.add(lb_naglowek1);
 		
-		lb_naglowek2_TwojeIP = new JLabel("Twoje IP:");
-		lb_naglowek2_TwojeIP.setFont(new Font("Verdana", Font.PLAIN, 13));
-		lb_naglowek2_TwojeIP.setHorizontalAlignment(SwingConstants.CENTER);
-		lb_naglowek2_TwojeIP.setBounds(0, 48, 495, 33);
-		p_naglowekOkna.add(lb_naglowek2_TwojeIP);
+		tf_naglowek2_TwojeIP = new JTextField("Twoje IP:");
+		tf_naglowek2_TwojeIP.setOpaque(false);
+		tf_naglowek2_TwojeIP.setBorder(null);
+		tf_naglowek2_TwojeIP.setFont(new Font("Verdana", Font.PLAIN, 13));
+		tf_naglowek2_TwojeIP.setHorizontalAlignment(SwingConstants.CENTER);
+		tf_naglowek2_TwojeIP.setBounds(0, 48, 495, 33);
+		tf_naglowek2_TwojeIP.setEditable(false);
+		p_naglowekOkna.add(tf_naglowek2_TwojeIP);
 		
 		JLabel lb_naglowek3 = new JLabel("(skopiuj je graczowi, z którym chcesz zagrać)");
 		lb_naglowek3.setFont(new Font("Verdana", Font.PLAIN, 12));

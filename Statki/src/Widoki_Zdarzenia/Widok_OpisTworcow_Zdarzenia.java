@@ -31,6 +31,7 @@ public class Widok_OpisTworcow_Zdarzenia implements ActionListener, WindowListen
 
 	@Override
 	public void windowClosing(WindowEvent e) {
+		wyjscie();
 	}
 
 	@Override
@@ -102,6 +103,12 @@ public class Widok_OpisTworcow_Zdarzenia implements ActionListener, WindowListen
 			widokOpisTworcow.widokGlowny.widokOpisAplikacji.setVisible(true);
 		if(oknoMacierzyste.equals("OknoUstawieniaLokalne"))
 			widokOpisTworcow.widokGlowny.widokUstawien.setVisible(true);
+		if(oknoMacierzyste.equals("OknoRozmiesc"))
+			widokOpisTworcow.widokGlowny.widokDolacz.widokRozmiesc.setVisible(true);
+		if(oknoMacierzyste.equals("OknoGry"))
+			widokOpisTworcow.widokGlowny.widokDolacz.widokRozmiesc.widokGry.setVisible(true);
+		if(oknoMacierzyste.equals("OknoWynikow"))
+			widokOpisTworcow.widokGlowny.widokDolacz.widokRozmiesc.widokGry.widokWynikow.setVisible(true);
 	}
 	
 	private void pokazOknoUstawienLokalnych()

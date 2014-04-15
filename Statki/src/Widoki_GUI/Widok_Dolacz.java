@@ -34,6 +34,7 @@ public class Widok_Dolacz extends JFrame {
 
 	private Widok_Dolacz_Zdarzenia widokDolaczZdarzenia;
 	public Widok_Glowny widokGlowny;
+	public Widok_Rozmiesc widokRozmiesc;
 	
 	private JPanel contentPane;
 	public JMenuItem mnI_Skapituluj;
@@ -75,6 +76,8 @@ public class Widok_Dolacz extends JFrame {
 	 */
 	public Widok_Dolacz(Widok_Glowny _widokGlowny) {
 		widokGlowny = _widokGlowny;
+		
+		widokRozmiesc = new Widok_Rozmiesc(widokGlowny);
 		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setSize(520, 430);

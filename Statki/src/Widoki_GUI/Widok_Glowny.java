@@ -38,8 +38,6 @@ public class Widok_Glowny extends JFrame {
 	public Widok_Ustawien widokUstawien;
 	public Widok_Opis_tworcow widokOpisTworcow;
 	
-	private Toolkit zestaw;
-	
 	private JPanel obszarKontenera;
 	
 	ImageIcon img_ObrazekGry = new ImageIcon(getClass().getResource("/tloGry/obrazekGry.png"));
@@ -93,7 +91,7 @@ public class Widok_Glowny extends JFrame {
 		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setSize(520, 430);
-		zestaw = Toolkit.getDefaultToolkit(); //narzedzie dzieki ktoremu mozna pobrac rozdzielczosc
+		Toolkit zestaw = Toolkit.getDefaultToolkit(); //narzedzie dzieki ktoremu mozna pobrac rozdzielczosc
 		Dimension wymiary = zestaw.getScreenSize();
 		int wysokosc = wymiary.height;
 		int szerokosc = wymiary.width;
