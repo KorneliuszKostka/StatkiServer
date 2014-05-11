@@ -20,9 +20,9 @@ public class Widok_Utworz_Zdarzenia implements ActionListener, WindowListener{
 	private Widok_Utworz widokUtworz;
 	public Host host;
 	
-	public Widok_Utworz_Zdarzenia(Widok_Utworz _widokUtworz) {
+	public Widok_Utworz_Zdarzenia(Widok_Utworz _widokUtworz, Host _host) {
 		widokUtworz = _widokUtworz;
-		host = new Host();
+		host = _host;
 		
 		widokUtworz.addWindowListener(this);
 		
@@ -96,6 +96,7 @@ public class Widok_Utworz_Zdarzenia implements ActionListener, WindowListener{
 		}
 		if(e.getSource() == widokUtworz.btn_utworzSerwer)
 		{
+			widokUtworz.btn_utworzSerwer.setEnabled(false);
 			utworzSerwer();
 		}
 	}
@@ -175,6 +176,9 @@ public class Widok_Utworz_Zdarzenia implements ActionListener, WindowListener{
 	
 	private void pokazOknoRozmiesc()
 	{
+		widokUtworz.uzytkownik.wybierzNazwe(widokUtworz.ftf_NazwaGracza.getText().trim());
+		widokUtworz.uzytkownik.wybierzAwatar(widokUtworz.cb_awatarGracza.getSelectedIndex());
+		widokUtworz.host.ustawNickHosta(widokUtworz.uzytkownik.getNazwaGracza());
 		widokUtworz.setVisible(false);
 		widokUtworz.widokRozmiesc.setVisible(true);
 	}

@@ -23,9 +23,9 @@ public class Widok_Dolacz_Zdarzenia implements ActionListener, WindowListener{
 	public Gracz gracz;
 	private Widok_Dolacz widokDolacz;
 	
-	public Widok_Dolacz_Zdarzenia(Widok_Dolacz _widokDolacz) {
+	public Widok_Dolacz_Zdarzenia(Widok_Dolacz _widokDolacz, Gracz _gracz) {
 		widokDolacz = _widokDolacz;
-		gracz = new Gracz();
+		gracz = _gracz;
 		
 		widokDolacz.addWindowListener(this);
 		
@@ -112,7 +112,9 @@ public class Widok_Dolacz_Zdarzenia implements ActionListener, WindowListener{
 		}
 		if(e.getSource() == widokDolacz.btn_Polacz)
 		{
+			widokDolacz.btn_Polacz.setEnabled(false);
 			polacz();
+			//pokazOknoRozmiesc();
 		}
 	}
 	
@@ -127,7 +129,8 @@ public class Widok_Dolacz_Zdarzenia implements ActionListener, WindowListener{
 	
 	public void polacz()
 	{
-		gracz.polacz(usunSpacje(widokDolacz.ftf_IpSerwera.getText()), widokDolacz.lb_komunikat_TRWALACZENIE);
+		gracz.podajIP(usunSpacje(widokDolacz.ftf_IpSerwera.getText()));
+		gracz.polacz(widokDolacz.lb_komunikat_TRWALACZENIE);
 		if(gracz.polaczenieOK)
 			widokDolacz.btn_RozpocznijRozmieszczanieStatkow.setEnabled(true);
 	}
@@ -170,6 +173,9 @@ public class Widok_Dolacz_Zdarzenia implements ActionListener, WindowListener{
 	
 	private void pokazOknoRozmiesc()
 	{
+		widokDolacz.uzytkownik.wybierzAwatar(widokDolacz.cb_AwatarGracza.getSelectedIndex());
+		widokDolacz.uzytkownik.wybierzNazwe(widokDolacz.ftf_NazwaGracza.getText().trim());
+		widokDolacz.gracz.ustawNickHosta(widokDolacz.uzytkownik.getNazwaGracza());
 		widokDolacz.setVisible(false);
 		widokDolacz.widokRozmiesc.typUsera = widokDolacz.ftf_NazwaGracza.getText().trim();
 		widokDolacz.widokRozmiesc.setVisible(true);

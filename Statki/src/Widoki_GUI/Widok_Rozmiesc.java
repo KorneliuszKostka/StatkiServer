@@ -26,6 +26,7 @@ import javax.swing.JButton;
 
 import Statki.Gracz;
 import Statki.Host;
+import Statki.Uzytkownik;
 import Widoki_Zdarzenia.Widok_Rozmiesc_Zdarzenia;
 
 import java.awt.event.ActionListener;
@@ -38,6 +39,7 @@ public class Widok_Rozmiesc extends JFrame {
 	public Widok_Gry widokGry;
 	public Host host;
 	public Gracz gracz;
+	public Uzytkownik uzytkownik;
 	
 	private JPanel contentPane;
 	
@@ -67,7 +69,7 @@ public class Widok_Rozmiesc extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Widok_Rozmiesc frame = new Widok_Rozmiesc(null, null, null);
+					Widok_Rozmiesc frame = new Widok_Rozmiesc(null, null, null, null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -77,13 +79,14 @@ public class Widok_Rozmiesc extends JFrame {
 	}
 
 	public String typUsera;
-	public Widok_Rozmiesc(Widok_Glowny _widokGlowny, Host _host, Gracz _gracz) {
+	public Widok_Rozmiesc(Widok_Glowny _widokGlowny, Host _host, Gracz _gracz, Uzytkownik _uzytkownik) {
 		
 		widokGlowny = _widokGlowny;
 		if(_host != null)
 			host = _host;
 		if(_gracz != null)
 			gracz = _gracz;
+		uzytkownik = _uzytkownik;
 	
 		setTitle("Statki v.1.0 Beta | SkyGames - rozmieszczenie statków");
 		setResizable(false);
@@ -170,7 +173,7 @@ public class Widok_Rozmiesc extends JFrame {
 		p_rodzajeStatkow.add(lblStatek);
 		
 		cb_RodzajStatku = new JComboBox();
-		cb_RodzajStatku.setModel(new DefaultComboBoxModel(new String[] {"", "Jednomasztowiec", "Dwumasztowiec", "Trójmasztowiec", "Czteromasztowiec"}));
+		cb_RodzajStatku.setModel(new DefaultComboBoxModel(new String[] {"", "jednomasztowiec", "dwumasztowiec", "trójmasztowiec", "czteromasztowiec"}));
 		cb_RodzajStatku.setBounds(123, 10, 115, 20);
 		p_rodzajeStatkow.add(cb_RodzajStatku);
 		
@@ -180,7 +183,7 @@ public class Widok_Rozmiesc extends JFrame {
 		p_rodzajeStatkow.add(lblRozmieszczenie);
 		
 		cb_Rozmieszczenie = new JComboBox();
-		cb_Rozmieszczenie.setModel(new DefaultComboBoxModel(new String[] {"", "Pionowe", "Poziome"}));
+		cb_Rozmieszczenie.setModel(new DefaultComboBoxModel(new String[] {"", "pionowo", "poziomo"}));
 		cb_Rozmieszczenie.setBounds(123, 54, 115, 20);
 		p_rodzajeStatkow.add(cb_Rozmieszczenie);
 		
@@ -230,6 +233,6 @@ public class Widok_Rozmiesc extends JFrame {
 		p_Cyfry.setLayout(null);
 		p_polaGry.setLayout(null);
 		
-		widokGry = new Widok_Gry(widokGlowny, host, gracz);
+		//widokGry = new Widok_Gry(widokGlowny, host, gracz, widokRozmiescZdarzenia.getUzytkownik());
 	}
 }

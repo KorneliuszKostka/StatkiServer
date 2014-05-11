@@ -22,6 +22,8 @@ import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.SwingConstants;
 
+import Statki.Host;
+import Statki.Uzytkownik;
 import Widoki_Zdarzenia.Widok_Utworz_Zdarzenia;
 
 import java.awt.Font;
@@ -35,6 +37,8 @@ public class Widok_Utworz extends JFrame {
 	private Widok_Utworz_Zdarzenia widokUtworzZdarzenia;
 	public Widok_Glowny widokGlowny;
 	public Widok_Rozmiesc widokRozmiesc;
+	public Host host;
+	public Uzytkownik uzytkownik;
 	
 	public JMenuItem mnI_UstawieniaLokalne;
 	public JMenuItem mnI_Wyjscie;
@@ -70,6 +74,8 @@ public class Widok_Utworz extends JFrame {
 	 */
 	public Widok_Utworz(Widok_Glowny _widokGlowny) {
 		widokGlowny = _widokGlowny;
+		host = new Host();
+		uzytkownik = new Uzytkownik(host);
 		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setSize(520, 430);
@@ -170,18 +176,17 @@ public class Widok_Utworz extends JFrame {
 		lb_tekst_NazwaGracza.setBounds(10, 11, 103, 17);
 		p_daneGracza.add(lb_tekst_NazwaGracza);
 		
-		
-
 		ImageIcon[] images;
 	    String[] nazwaAwatarow = {"awatar1", "awatar2"};
         images = new ImageIcon[nazwaAwatarow.length];
         Integer[] intArray = new Integer[nazwaAwatarow.length];
         for (int i = 0; i < nazwaAwatarow.length; i++) {
             intArray[i] = new Integer(i);
-            images[i] = createImageIcon("/awatary/" + nazwaAwatarow[i] + ".png");
-            
+            images[i] = createImageIcon("/awatary/" + nazwaAwatarow[i] + ".png"); 
         }
-
+        
+        uzytkownik.przekazAwatary(images);
+        
         cb_awatarGracza = new JComboBox(intArray);
         cb_awatarGracza.setBounds(122, 40, 126, 80);
         ComboBoxRenderer renderer= new ComboBoxRenderer(images);
@@ -230,7 +235,7 @@ public class Widok_Utworz extends JFrame {
 		btn_utworzSerwer.setBounds(166, 132, 82, 23);
 		p_daneGracza.add(btn_utworzSerwer);
 		
-		widokUtworzZdarzenia = new Widok_Utworz_Zdarzenia(this);
+		widokUtworzZdarzenia = new Widok_Utworz_Zdarzenia(this, uzytkownik.getHost());
 		
 		String maska = "";
 		for(int i=0;i<16;i++)
@@ -243,7 +248,7 @@ public class Widok_Utworz extends JFrame {
 		p_daneGracza.add(ftf_NazwaGracza);
 		
 		
-		widokRozmiesc = new Widok_Rozmiesc(widokGlowny, widokUtworzZdarzenia.host, null);
+		widokRozmiesc = new Widok_Rozmiesc(widokGlowny, uzytkownik.getHost(), null, uzytkownik);
 		
 	}
 	

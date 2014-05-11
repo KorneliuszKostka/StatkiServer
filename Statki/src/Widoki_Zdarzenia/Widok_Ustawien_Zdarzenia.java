@@ -106,7 +106,7 @@ public class Widok_Ustawien_Zdarzenia implements ActionListener, WindowListener{
 		if(oknoMacierzyste.equals("OknoGry"))
 			widokUstawien.widokGlowny.widokDolacz.widokRozmiesc.widokGry.setVisible(true);
 		if(oknoMacierzyste.equals("OknoWynikow"))
-			widokUstawien.widokGlowny.widokDolacz.widokRozmiesc.widokGry.widokWynikow.setVisible(true);
+			widokUstawien.widokGlowny.widokDolacz.widokRozmiesc.widokGry.widokGryZdarzenia.widokWynikow.setVisible(true);
 	}
 	
 	private void pokazOknoOpisuAplikacji()

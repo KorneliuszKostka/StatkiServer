@@ -34,14 +34,20 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 
+import Statki.Gracz;
+import Statki.Host;
 import Widoki_Zdarzenia.Widok_Wynikow_Zdarzenia;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.DefaultComboBoxModel;
 
 public class Widok_Wynikow extends JFrame {
 
 	public Widok_Wynikow_Zdarzenia widokWynikowZdarzenia;
 	public Widok_Gry widokGry;
+	public Host host;
+	public Gracz gracz;
 	
 	private JPanel contentPane;
 	public JTextField tf_Wiadomosc;
@@ -63,6 +69,9 @@ public class Widok_Wynikow extends JFrame {
 	public JMenuItem mnI_oTworcach;
 	public JMenuItem mnI_oGrze;
 	public JMenuItem mnI_InstrukcjaObslugi;
+	public JTextArea ta_Czat;
+	public JButton btn_Wyslij;
+	public JComboBox cb_szablonyRozmow;
 
 	/**
 	 * Launch the application.
@@ -71,7 +80,7 @@ public class Widok_Wynikow extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Widok_Wynikow frame = new Widok_Wynikow(null);
+					Widok_Wynikow frame = new Widok_Wynikow(null, null, null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -83,9 +92,11 @@ public class Widok_Wynikow extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Widok_Wynikow(Widok_Gry _widokGry) {
+	public Widok_Wynikow(Widok_Gry _widokGry, Host _host, Gracz _gracz) {
 		
 		widokGry = _widokGry;
+		host = _host;
+		gracz = _gracz;
 		
 		setTitle("Statki v.1.0 Beta | SkyGames - wyniki gry");
 		setResizable(false);
@@ -96,7 +107,7 @@ public class Widok_Wynikow extends JFrame {
 		    }
 		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setSize(630, 500);
+		setSize(630, 550);
 		Toolkit zestaw = Toolkit.getDefaultToolkit(); //narzedzie dzieki ktoremu mozna pobrac rozdzielczosc
 		Dimension wymiary = zestaw.getScreenSize();
 		int wysokosc = wymiary.height;
@@ -239,34 +250,35 @@ public class Widok_Wynikow extends JFrame {
 		
 		JPanel p_CZAT = new JPanel();
 		p_CZAT.setLayout(null);
-		p_CZAT.setBounds(10, 340, 604, 107);
+		p_CZAT.setBounds(10, 340, 604, 150);
 		contentPane.add(p_CZAT);
 		
 		tf_Wiadomosc = new JTextField();
 		tf_Wiadomosc.setFont(new Font("Verdana", Font.PLAIN, 15));
 		tf_Wiadomosc.setColumns(10);
 		tf_Wiadomosc.setBorder(new LineBorder(Color.BLACK, 1, true));
-		tf_Wiadomosc.setBounds(0, 74, 352, 25);
+		tf_Wiadomosc.setBounds(0, 125, 352, 25);
 		p_CZAT.add(tf_Wiadomosc);
 		
 		JScrollPane sp_Czat = new JScrollPane((Component) null);
 		sp_Czat.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		sp_Czat.setBounds(0, 10, 604, 58);
+		sp_Czat.setBounds(0, 10, 604, 104);
 		p_CZAT.add(sp_Czat);
 		
-		JTextArea ta_Rozmowa = new JTextArea();
-		ta_Rozmowa.setFont(new Font("Verdana", Font.PLAIN, 12));
-		sp_Czat.setViewportView(ta_Rozmowa);
+		ta_Czat = new JTextArea();
+		ta_Czat.setFont(new Font("Verdana", Font.PLAIN, 12));
+		sp_Czat.setViewportView(ta_Czat);
 		
-		JButton button = new JButton("Wyslij");
-		button.setFont(new Font("Verdana", Font.BOLD, 11));
-		button.setBounds(499, 71, 105, 25);
-		p_CZAT.add(button);
+		btn_Wyslij = new JButton("Wyslij");
+		btn_Wyslij.setFont(new Font("Verdana", Font.BOLD, 11));
+		btn_Wyslij.setBounds(499, 122, 105, 25);
+		p_CZAT.add(btn_Wyslij);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setFont(new Font("Verdana", Font.PLAIN, 10));
-		comboBox.setBounds(362, 72, 127, 25);
-		p_CZAT.add(comboBox);
+		cb_szablonyRozmow = new JComboBox();
+		cb_szablonyRozmow.setModel(new DefaultComboBoxModel(new String[] {"", "Niezły strzał!", "Jesteś niezły :D", "Ale fart!", "Co za pech!", "Chyba przegram :(", "Gratulacje :)", "Brak szczęscia :/", "Zniszczę Cię !!!", "Rewanż ???"}));
+		cb_szablonyRozmow.setFont(new Font("Verdana", Font.PLAIN, 10));
+		cb_szablonyRozmow.setBounds(362, 123, 127, 25);
+		p_CZAT.add(cb_szablonyRozmow);
 		
 		JPanel p_OpcjeOknaWynikow = new JPanel();
 		p_OpcjeOknaWynikow.setLayout(null);
@@ -295,7 +307,7 @@ public class Widok_Wynikow extends JFrame {
 		btn_OpuscGre.setBounds(10, 102, 145, 25);
 		p_OpcjeOknaWynikow.add(btn_OpuscGre);
 		
-		widokWynikowZdarzenia = new Widok_Wynikow_Zdarzenia(this);
+		widokWynikowZdarzenia = new Widok_Wynikow_Zdarzenia(this, host, gracz);
 		
 		widokWynikowZdarzenia.stworzPolaGry(widokWynikowZdarzenia.lb_polaGry_GRACZ, 18, 18, 18, p_poleGry_GRACZ, p_litery_GRACZ, p_cyfry_GRACZ, 17, 15);
 		widokWynikowZdarzenia.stworzPolaGry(widokWynikowZdarzenia.lb_polaGry_PRZECIWNIK, 18, 18, 18, p_poleGry_PRZECIWNIK, p_litery_PRZECIWNIK, p_cyfry_PRZECIWNIK, 17, 15);

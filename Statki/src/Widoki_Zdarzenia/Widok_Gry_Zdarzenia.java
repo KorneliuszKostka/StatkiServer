@@ -23,17 +23,21 @@ import javax.swing.Timer;
 import Statki.Gracz;
 import Statki.Host;
 import Widoki_GUI.Widok_Gry;
+import Widoki_GUI.Widok_Wynikow;
 
 public class Widok_Gry_Zdarzenia extends Thread implements ActionListener, WindowListener, MouseListener, ItemListener{
 	private Widok_Gry widokGry;
+	public Widok_Wynikow widokWynikow;
 	
 	public Host host;
 	public Gracz gracz;
 	
-	public Widok_Gry_Zdarzenia(Widok_Gry _widokGry) {
+	public Widok_Gry_Zdarzenia(Widok_Gry _widokGry, Host _host, Gracz _gracz) {
 		widokGry = _widokGry;
-		gracz = new Gracz();
-		host = new Host();
+		gracz = _gracz;
+		host = _host;
+		
+		widokWynikow = new Widok_Wynikow(widokGry, host, gracz);
 		
 		widokGry.addWindowListener(this);
 		
@@ -51,22 +55,31 @@ public class Widok_Gry_Zdarzenia extends Thread implements ActionListener, Windo
 		widokGry.cb_szablonyWiadomosci.addItemListener(this);
 		widokGry.cb_RodzajStrzalu.addItemListener(this);
 		
-		czatAktwyny = true;
-		this.start();
+		
+		
 	}
 	
-	boolean czatAktwyny;
+	/*boolean czatAktwyny;
 	public void run()
 	{
 		while(czatAktwyny)
 		{
-			System.out.println("Pobieranie wlaczone!!!");
 			pobierzWiadomosc();
 		}
-	}
+	}*/
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		//widokGry.lb_wspStrzaluPrzeciwnika.setText(lb_polaGry_PRZECIWNIK[0][0].getText());
+		for(int i = 0;i < 10; i++)
+			for(int j = 0;j < 10; j++)
+				if(e.getSource() == lb_polaGry_PRZECIWNIK[j][i])
+				{
+					if(gracz != null)
+						gracz.wyslijWiadomosc(""+j+""+i, "#WS#");
+					if(host != null)
+						host.wyslijWiadomosc(""+j+""+i, "#WS#");
+				}
 	}
 
 	@Override
@@ -87,9 +100,32 @@ public class Widok_Gry_Zdarzenia extends Thread implements ActionListener, Windo
 
 	@Override
 	public void windowOpened(WindowEvent e) {
-		zaladujCzat ();
-		//widokGry.t_czat = new Timer(500, this);
-		//widokGry.t_czat.start();
+		if(gracz != null)
+		{
+			System.out.println("Włączam pobieranie wiadomosci KLIENT!");
+			gracz.przekazPoleCzatu(widokGry.ta_CzatGraczy);
+			gracz.przekazPoleWiadomosci(widokGry.tf_TrescWiadomosci);
+			gracz.przekazPoleNick(widokGry.lb_NazwaPrzeciwnika);
+			gracz.przekazPoleAwatar(widokGry.lb_AwatarPrzeciwnika);
+			gracz.przekazPoleWspPrzeciwnika(widokGry.lb_wspStrzaluPrzeciwnika);
+			gracz.przekazUzytkownika(widokGry.uzytkownik);
+			gracz.ustawNickGracza(widokGry.lb_NazwaGracza.getText());
+			gracz.wlaczPobieranieWiadomosci();
+			gracz.wyslijWiadomosc(widokGry.lb_NazwaGracza.getText()+"|"+widokGry.uzytkownik.nrAwatara, "#DG#");
+		}
+		if(host != null)
+		{
+			System.out.println("Włączam pobieranie wiadomosci HOST!");
+			host.przekazPoleCzatu(widokGry.ta_CzatGraczy);
+			host.przekazPoleWiadomosci(widokGry.tf_TrescWiadomosci);
+			host.przekazPoleNick(widokGry.lb_NazwaPrzeciwnika);
+			host.przekazPoleAwatar(widokGry.lb_AwatarPrzeciwnika);
+			host.przekazPoleWspPrzeciwnika(widokGry.lb_wspStrzaluPrzeciwnika);
+			host.przekazUzytkownika(widokGry.uzytkownik);
+			host.ustawNickHosta(widokGry.lb_NazwaGracza.getText());
+			host.wlaczPobieranieWiadomosci();
+			host.wyslijWiadomosc(widokGry.lb_NazwaGracza.getText()+"|"+widokGry.uzytkownik.nrAwatara, "#DG#");
+		}
 	}
 
 	@Override
@@ -156,77 +192,11 @@ public class Widok_Gry_Zdarzenia extends Thread implements ActionListener, Windo
 		}
 		if(e.getSource() == widokGry.btn_Wyslij)
 		{
-			wyslijWiadomosc();
-		}
-		if(e.getSource() == widokGry.t_czat)
-		{
-			
-		}
-	}
-	
-	public void pobierzWiadomosc()
-	{
-		if(widokGry.host != null)
-		{
-			if(widokGry.host.polaczenieOK)
-			{
-				try {
-					widokGry.host.odbierzWiadomosc(widokGry.ta_CzatGraczy);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-		if(widokGry.gracz != null)
-		{
-			if(widokGry.gracz.polaczenieOK)
-			{
-				try {
-					widokGry.gracz.odbierzWiadomosc(widokGry.ta_CzatGraczy);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-	
-	public void wyslijWiadomosc()
-	{
-		if(widokGry.host != null)
-		{
-			try {
-				widokGry.host.wyslijWiadomosc(widokGry.tf_TrescWiadomosci);
-				System.out.println("Wyslal host!");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		if(widokGry.gracz != null)
-		{
-			try {
-				widokGry.gracz.wyslijWiadomosc(widokGry.tf_TrescWiadomosci);
-				System.out.println("Wyslal klient!");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	public void zaladujCzat ()
-	{
-		if(widokGry.host != null)
-		{
-			widokGry.ta_CzatGraczy.setText("Czat aktywny z komputerem o nr IP: "+
-					widokGry.ta_CzatGraczy.getText()+widokGry.host.pobierzIpKlienta()+"\n");
-		}
-		if(widokGry.gracz != null)
-		{
-			widokGry.ta_CzatGraczy.setText("Czat aktywny z komputerem o nr IP: "+
-					widokGry.ta_CzatGraczy.getText()+widokGry.gracz.pobierzIpSerwera()+"\n");
+			if(gracz != null)
+				gracz.wyslijWiadomosc(widokGry.tf_TrescWiadomosci.getText(), "#WP#");
+			if(host != null)
+				host.wyslijWiadomosc(widokGry.tf_TrescWiadomosci.getText(), "#WP#");
+			czyscPoleWiadomosci();
 		}
 	}
 
@@ -234,8 +204,11 @@ public class Widok_Gry_Zdarzenia extends Thread implements ActionListener, Windo
 	public void itemStateChanged(ItemEvent e) {
 		if(e.getSource() == widokGry.cb_szablonyWiadomosci)
 			wstawSzablonWiadomosci(widokGry.cb_szablonyWiadomosci.getSelectedItem().toString());
-			
-		
+	}
+	
+	public void czyscPoleWiadomosci()
+	{
+		widokGry.tf_TrescWiadomosci.setText("");
 	}
 	
 	private void wstawSzablonWiadomosci(String _wiadomosc)
@@ -251,6 +224,18 @@ public class Widok_Gry_Zdarzenia extends Thread implements ActionListener, Windo
 		null, opcje, opcje[0]); 
 		
 		if (odpowiedz == JOptionPane.YES_OPTION) {
+			if(host != null)
+			{
+				host.czyWyslacZakonczenie = true;
+				host.wyslijWiadomosc(null, null);
+				host.rozlacz();
+			}
+			if(gracz != null)
+			{
+				gracz.czyWyslacZakonczenie = true;
+				gracz.wyslijWiadomosc(null, null);
+				gracz.rozlacz();
+			}
 			System.exit(0);
 		} 
 	}
@@ -288,12 +273,27 @@ public class Widok_Gry_Zdarzenia extends Thread implements ActionListener, Windo
 	private void pokazOknoOpisWynikow()
 	{
 		widokGry.setVisible(false);
-		widokGry.widokGlowny.widokDolacz.widokRozmiesc.widokGry.widokWynikow.setVisible(true);
+		//widokGry.widokGlowny.widokDolacz.widokRozmiesc.widokGry.widokWynikow.setVisible(true);
+		widokWynikow.setVisible(true);
+	}
+	
+	public void przerysujPlanszeGRACZA(JLabel[][] _polaGryGRACZ)
+	{
+		for(int k=0;k<10;k++)
+			for(int l=0;l<10;l++)
+			{
+				if(widokGry.uzytkownik.plansza.l_polaPlanszy[l][k].getRodzajPola().equals("1"))	
+					_polaGryGRACZ[l][k].setBackground(Color.BLUE);
+				//else if(widokGry.uzytkownik.plansza.l_polaPlanszy[l][k].getRodzajPola().equals("X"))
+					//_polaGryGRACZ[l][k].setBackground(Color.RED);
+				else
+					_polaGryGRACZ[l][k].setBackground(new Color(240,240,240));
+			}
 	}
 	
 	public JLabel lb_polaGry_GRACZ[][];
 	public JLabel lb_polaGry_PRZECIWNIK[][];
-	public void stworzPolaGry(JLabel[][] _pola, int _szerPojPola, int _wysPojPola, int _skok, JPanel _obszarPol, JPanel _obszarLiter, JPanel _obszarCyfr, int _szer, int _wys)
+	public void stworzPolaGry(boolean _czyPrzerysowac, JLabel[][] _pola, int _szerPojPola, int _wysPojPola, int _skok, JPanel _obszarPol, JPanel _obszarLiter, JPanel _obszarCyfr, int _szer, int _wys)
 	{
 		JLabel lb_litery[] = new JLabel[10];
 		JLabel lb_cyfry[] = new JLabel[10];
@@ -312,12 +312,20 @@ public class Widok_Gry_Zdarzenia extends Thread implements ActionListener, Windo
 				_pola[j][i] = new JLabel();
 				_pola[j][i].setBounds(x, y, _szerPojPola, _wysPojPola);
 				_pola[j][i].setText(String.valueOf(j)+String.valueOf(i));
+				_pola[j][i].setOpaque(true);
 				_pola[j][i].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
 				_pola[j][i].setHorizontalAlignment(SwingConstants.CENTER);
 				_pola[j][i].setVerticalAlignment(SwingConstants.CENTER);
 				//_pola[j][i].setBorder(BorderFactory.createLineBorder(Color.RED, 1));
 				_pola[j][i].addMouseListener(this);
 				_obszarPol.add(_pola[j][i]);
+				
+				/*if(widokGry.uzytkownik.plansza.l_polaPlanszy[j][i].getRodzajPola().equals("1"))	
+					_pola[j][i].setBackground(Color.BLUE);
+				else if(widokGry.uzytkownik.plansza.l_polaPlanszy[j][i].getRodzajPola().equals("X"))
+					_pola[j][i].setBackground(Color.RED);
+				else
+					_pola[j][i].setBackground(new Color(240,240,240));*/
 				
 				
 				lb_cyfry[i] = new JLabel();
@@ -335,6 +343,15 @@ public class Widok_Gry_Zdarzenia extends Thread implements ActionListener, Windo
 			lb_litery[i].setHorizontalAlignment(SwingConstants.RIGHT);
 			//lb_litery[i].setBorder(BorderFactory.createLineBorder(Color.RED, 1));
 			_obszarLiter.add(lb_litery[i]);
+		}
+		if(_czyPrzerysowac)
+		{
+			przerysujPlanszeGRACZA(_pola);
+			lb_polaGry_GRACZ = _pola;
+		}
+		else
+		{
+			lb_polaGry_PRZECIWNIK = _pola;
 		}
 	}
 }

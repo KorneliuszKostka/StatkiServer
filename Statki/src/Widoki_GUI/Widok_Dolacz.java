@@ -30,6 +30,7 @@ import javax.swing.JComboBox;
 
 import Statki.Gracz;
 import Statki.Host;
+import Statki.Uzytkownik;
 import Widoki_Zdarzenia.Widok_Dolacz_Zdarzenia;
 
 public class Widok_Dolacz extends JFrame {
@@ -37,6 +38,8 @@ public class Widok_Dolacz extends JFrame {
 	private Widok_Dolacz_Zdarzenia widokDolaczZdarzenia;
 	public Widok_Glowny widokGlowny;
 	public Widok_Rozmiesc widokRozmiesc;
+	public Gracz gracz;
+	public Uzytkownik uzytkownik;
 	
 	private JPanel contentPane;
 	public JMenuItem mnI_Skapituluj;
@@ -80,6 +83,8 @@ public class Widok_Dolacz extends JFrame {
 	 */
 	public Widok_Dolacz(Widok_Glowny _widokGlowny) {
 		widokGlowny = _widokGlowny;
+		gracz = new Gracz();
+		uzytkownik = new Uzytkownik(gracz);
 		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setSize(520, 430);
@@ -133,7 +138,7 @@ public class Widok_Dolacz extends JFrame {
 		p_przyciski.add(btn_WrocDoWyboruKategorii);
 		
 		btn_RozpocznijRozmieszczanieStatkow = new JButton("Rozpocznij rozmieszczanie statków");
-		btn_RozpocznijRozmieszczanieStatkow.setEnabled(false);
+		btn_RozpocznijRozmieszczanieStatkow.setEnabled(true);
 		btn_RozpocznijRozmieszczanieStatkow.setFont(new Font("Verdana", Font.BOLD, 10));
 		btn_RozpocznijRozmieszczanieStatkow.setBounds(250, 11, 235, 33);
 		p_przyciski.add(btn_RozpocznijRozmieszczanieStatkow);
@@ -158,8 +163,6 @@ public class Widok_Dolacz extends JFrame {
 		lb_tekst_AWATAR.setBounds(10, 100, 80, 80);
 		p_daneSerwerUzytkownik.add(lb_tekst_AWATAR);
 		
-		
-		
 		ImageIcon[] images;
 	    String[] nazwaAwatarow = {"awatar1", "awatar2"};
         images = new ImageIcon[nazwaAwatarow.length];
@@ -170,6 +173,8 @@ public class Widok_Dolacz extends JFrame {
             
         }
 
+        uzytkownik.przekazAwatary(images);
+        
         //Create the combo box.
         cb_AwatarGracza = new JComboBox(intArray);
 		cb_AwatarGracza.setBounds(99, 100, 126, 80);
@@ -239,14 +244,15 @@ public class Widok_Dolacz extends JFrame {
 		btn_Polacz.setBounds(118, 191, 117, 31);
 		p_daneSerwerUzytkownik.add(btn_Polacz);
 		
-		widokDolaczZdarzenia = new Widok_Dolacz_Zdarzenia(this);
+		widokDolaczZdarzenia = new Widok_Dolacz_Zdarzenia(this, uzytkownik.getGracz());
 		
 		String maska = "";
-		maska = "###.###.###.###";
+		//maska = "###.###.###.###";
 		ftf_IpSerwera = new JFormattedTextField();
-		ftf_IpSerwera.setFormatterFactory(new DefaultFormatterFactory(widokDolaczZdarzenia.stworzFormat(maska)));
+		//ftf_IpSerwera.setFormatterFactory(new DefaultFormatterFactory(widokDolaczZdarzenia.stworzFormat(maska)));
 		ftf_IpSerwera.setFocusLostBehavior(JFormattedTextField.COMMIT);
 		ftf_IpSerwera.setBounds(100, 11, 125, 20);
+		ftf_IpSerwera.setText("169.254.232.56");
 		p_daneSerwerUzytkownik.add(ftf_IpSerwera);
 		
 		maska = "";
@@ -259,7 +265,7 @@ public class Widok_Dolacz extends JFrame {
 		ftf_NazwaGracza.setBounds(100, 58, 125, 20);
 		p_daneSerwerUzytkownik.add(ftf_NazwaGracza);
 		
-		widokRozmiesc = new Widok_Rozmiesc(widokGlowny, null, widokDolaczZdarzenia.gracz);	
+		widokRozmiesc = new Widok_Rozmiesc(widokGlowny, null, uzytkownik.getGracz(), uzytkownik);	
 	}
 	
 protected static ImageIcon createImageIcon(String path) {

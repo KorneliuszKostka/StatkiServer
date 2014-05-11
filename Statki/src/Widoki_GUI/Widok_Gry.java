@@ -37,6 +37,7 @@ import javax.swing.DefaultComboBoxModel;
 
 import Statki.Gracz;
 import Statki.Host;
+import Statki.Uzytkownik;
 import Widoki_Zdarzenia.Widok_Gry_Zdarzenia;
 
 import java.awt.Insets;
@@ -45,9 +46,10 @@ public class Widok_Gry extends JFrame {
 	
 	public Widok_Gry_Zdarzenia widokGryZdarzenia;
 	public Widok_Glowny widokGlowny;
-	public Widok_Wynikow widokWynikow;
+	//public Widok_Wynikow widokWynikow;
 	public Host host;
 	public Gracz gracz;
+	public Uzytkownik uzytkownik;
 
 	private JPanel contentPane;
 	public JMenuItem mnI_Skapituluj;
@@ -80,6 +82,8 @@ public class Widok_Gry extends JFrame {
 	private JPanel p_Cyfry_PRZECIWNIK;
 	private JPanel p_Litery_PRZECIWNIK;
 	
+	public JLabel lb_wspStrzaluPrzeciwnika;
+	
 	public Timer t_czat;
 
 	/**
@@ -89,7 +93,7 @@ public class Widok_Gry extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Widok_Gry frame = new Widok_Gry(null, null, null);
+					Widok_Gry frame = new Widok_Gry(null, null, null, null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -101,13 +105,13 @@ public class Widok_Gry extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Widok_Gry(Widok_Glowny _widokGlowny, Host _host, Gracz _gracz) {
+	public Widok_Gry(Widok_Glowny _widokGlowny, Host _host, Gracz _gracz, Uzytkownik _uzytkownik) {
 		
 		widokGlowny = _widokGlowny;
-		if(_host != null)
-			host = _host;
-		if(_gracz != null)
-			gracz = _gracz;
+		host = _host;
+		gracz = _gracz;
+		uzytkownik = _uzytkownik;
+		
 		
 		setTitle("Statki v.1.0 Beta | SkyGames - okno gry");
 		setResizable(false);
@@ -118,7 +122,7 @@ public class Widok_Gry extends JFrame {
 		    }
 		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setSize(630, 500);
+		setSize(630, 550);
 		Toolkit zestaw = Toolkit.getDefaultToolkit(); //narzedzie dzieki ktoremu mozna pobrac rozdzielczosc
 		Dimension wymiary = zestaw.getScreenSize();
 		int wysokosc = wymiary.height;
@@ -178,14 +182,15 @@ public class Widok_Gry extends JFrame {
 		p_poleGryGracza.setBounds(25, 154, 180, 180);
 		p_obszarGracza.add(p_poleGryGracza);
 		
-		lb_AwatarGracza = new JLabel("AwatarGracza");
-		lb_AwatarGracza.setBounds(90, 48, 70, 75);
+		lb_AwatarGracza = new JLabel();
+		lb_AwatarGracza.setBounds(73, 45, 75, 75);
+		lb_AwatarGracza.setIcon(uzytkownik.getAwatar());
 		p_obszarGracza.add(lb_AwatarGracza);
 		
 		lb_NazwaGracza = new JLabel("NazwaGracza");
 		lb_NazwaGracza.setFont(new Font("Verdana", Font.BOLD, 10));
 		lb_NazwaGracza.setHorizontalAlignment(SwingConstants.CENTER);
-		lb_NazwaGracza.setBounds(25, 23, 200, 14);
+		lb_NazwaGracza.setBounds(25, 23, 170, 14);
 		p_obszarGracza.add(lb_NazwaGracza);
 		
 		p_obszarPrzeciwnika = new JPanel();
@@ -200,8 +205,9 @@ public class Widok_Gry extends JFrame {
 		p_obszarPrzeciwnika.add(p_poleGryPrzeciwnika);
 		
 		
-		lb_AwatarPrzeciwnika = new JLabel("AwatarPrzeciwnika");
-		lb_AwatarPrzeciwnika.setBounds(35, 0, 70, 75);
+		lb_AwatarPrzeciwnika = new JLabel();
+		lb_AwatarPrzeciwnika.setHorizontalAlignment(SwingConstants.CENTER);
+		lb_AwatarPrzeciwnika.setBounds(35, 0, 75, 75);
 		p_obszarPrzeciwnika.add(lb_AwatarPrzeciwnika);
 		
 		lb_NazwaPrzeciwnika = new JLabel("NazwaPrzeciwnika");
@@ -250,15 +256,21 @@ public class Widok_Gry extends JFrame {
 		lb_tekst_RodzajStrzalu.setBounds(0, 153, 105, 20);
 		p_opcjeGry.add(lb_tekst_RodzajStrzalu);
 		
+		lb_wspStrzaluPrzeciwnika = new JLabel((String) null);
+		lb_wspStrzaluPrzeciwnika.setHorizontalAlignment(SwingConstants.CENTER);
+		lb_wspStrzaluPrzeciwnika.setFont(new Font("Verdana", Font.BOLD, 10));
+		lb_wspStrzaluPrzeciwnika.setBounds(0, 0, 125, 25);
+		p_opcjeGry.add(lb_wspStrzaluPrzeciwnika);
+		
 		p_rozmowaGraczy = new JPanel();
-		p_rozmowaGraczy.setBounds(10, 344, 604, 107);
+		p_rozmowaGraczy.setBounds(10, 344, 604, 146);
 		contentPane.add(p_rozmowaGraczy);
 		p_rozmowaGraczy.setLayout(null);
 		
 		tf_TrescWiadomosci = new JTextField();
 		tf_TrescWiadomosci.setFont(new Font("Verdana", Font.PLAIN, 15));
 		tf_TrescWiadomosci.setBorder(new LineBorder(Color.BLACK, 1, true));
-		tf_TrescWiadomosci.setBounds(0, 74, 352, 25);
+		tf_TrescWiadomosci.setBounds(0, 121, 352, 25);
 		p_rozmowaGraczy.add(tf_TrescWiadomosci);
 		tf_TrescWiadomosci.setColumns(10);
 		
@@ -266,20 +278,20 @@ public class Widok_Gry extends JFrame {
 		ta_CzatGraczy.setFont(new Font("Verdana", Font.PLAIN, 12));
 		
 		JScrollPane sp_rozmowaGraczy = new JScrollPane(ta_CzatGraczy);
-		sp_rozmowaGraczy.setBounds(0, 10, 604, 58);
+		sp_rozmowaGraczy.setBounds(0, 10, 604, 100);
 		sp_rozmowaGraczy.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		
 		p_rozmowaGraczy.add(sp_rozmowaGraczy);
 		
 		btn_Wyslij = new JButton("Wyslij");
 		btn_Wyslij.setFont(new Font("Verdana", Font.BOLD, 11));
-		btn_Wyslij.setBounds(499, 71, 105, 25);
+		btn_Wyslij.setBounds(499, 118, 105, 25);
 		p_rozmowaGraczy.add(btn_Wyslij);
 		
 		cb_szablonyWiadomosci = new JComboBox();
 		cb_szablonyWiadomosci.setModel(new DefaultComboBoxModel(new String[] {"", "Niezły strzał!", "Jesteś niezły :D", "Ale fart!", "Co za pech!", "Chyba przegram :(", "Gratulacje :)", "Brak szczęscia :/", "Zniszczę Cię !!!", "Rewanż ???"}));
 		cb_szablonyWiadomosci.setFont(new Font("Verdana", Font.PLAIN, 10));
-		cb_szablonyWiadomosci.setBounds(362, 72, 127, 25);
+		cb_szablonyWiadomosci.setBounds(362, 119, 127, 25);
 		p_rozmowaGraczy.add(cb_szablonyWiadomosci);
 		
 		p_Litery_GRACZ = new JPanel();
@@ -294,11 +306,17 @@ public class Widok_Gry extends JFrame {
 		p_Cyfry_GRACZ.setLayout(null);
 		p_Litery_GRACZ.setLayout(null);
 		
-		widokGryZdarzenia = new Widok_Gry_Zdarzenia(this);
+		widokGryZdarzenia = new Widok_Gry_Zdarzenia(this, host, gracz);
 		
-		widokGryZdarzenia.stworzPolaGry(widokGryZdarzenia.lb_polaGry_GRACZ, 18, 18, 18, p_poleGryGracza, p_Litery_GRACZ, p_Cyfry_GRACZ, 17, 15);
-		widokGryZdarzenia.stworzPolaGry(widokGryZdarzenia.lb_polaGry_PRZECIWNIK, 23, 23, 24, p_poleGryPrzeciwnika, p_Litery_PRZECIWNIK, p_Cyfry_PRZECIWNIK, 18, 18);
+		widokGryZdarzenia.stworzPolaGry(true, widokGryZdarzenia.lb_polaGry_GRACZ, 18, 18, 18, p_poleGryGracza, p_Litery_GRACZ, p_Cyfry_GRACZ, 17, 15);
+		widokGryZdarzenia.stworzPolaGry(false, widokGryZdarzenia.lb_polaGry_PRZECIWNIK, 23, 23, 24, p_poleGryPrzeciwnika, p_Litery_PRZECIWNIK, p_Cyfry_PRZECIWNIK, 18, 18);
 		
-		widokWynikow = new Widok_Wynikow(this);
+		lb_AwatarGracza.setText(uzytkownik.plansza.l_polaPlanszy[0][0].getRodzajPola());
+		
+		lb_NazwaGracza.setText(uzytkownik.getNazwaGracza());
+		
+		//widokGryZdarzenia.przerysujPlanszeGRACZA(widokGryZdarzenia.lb_polaGry_GRACZ);
+		
+		//widokWynikow = new Widok_Wynikow(this, host, gracz);
 	}
 }

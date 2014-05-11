@@ -111,7 +111,7 @@ public class Widok_OpisAplikacji_Zdarzenia implements ActionListener, WindowList
 		if(oknoMacierzyste.equals("OknoGry"))
 			widokOpisAplikacji.widokGlowny.widokDolacz.widokRozmiesc.widokGry.setVisible(true);
 		if(oknoMacierzyste.equals("OknoWynikow"))
-			widokOpisAplikacji.widokGlowny.widokDolacz.widokRozmiesc.widokGry.widokWynikow.setVisible(true);
+			widokOpisAplikacji.widokGlowny.widokDolacz.widokRozmiesc.widokGry.widokGryZdarzenia.widokWynikow.setVisible(true);
 	}
 	
 	private void pokazOknoUstawienLokalnych()

@@ -4,10 +4,13 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -15,14 +18,21 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import Statki.Gracz;
+import Statki.Host;
 import Widoki_GUI.Widok_Wynikow;
 
-public class Widok_Wynikow_Zdarzenia implements ActionListener, WindowListener, MouseListener{
+public class Widok_Wynikow_Zdarzenia implements ActionListener, WindowListener, MouseListener, ItemListener{
 	
 	private Widok_Wynikow widokWynikow;
 	
-	public Widok_Wynikow_Zdarzenia(Widok_Wynikow _widokWynikow) {
+	public Host host;
+	public Gracz gracz;
+	
+	public Widok_Wynikow_Zdarzenia(Widok_Wynikow _widokWynikow, Host _host, Gracz _gracz) {
 		widokWynikow = _widokWynikow;
+		gracz = _gracz;
+		host = _host;
 		
 		widokWynikow.addWindowListener(this);
 		
@@ -34,12 +44,31 @@ public class Widok_Wynikow_Zdarzenia implements ActionListener, WindowListener, 
 		widokWynikow.mnI_InstrukcjaObslugi.addActionListener(this);
 		widokWynikow.mnI_oGrze.addActionListener(this);
 		widokWynikow.mnI_oTworcach.addActionListener(this);
+		widokWynikow.btn_Wyslij.addActionListener(this);
+		
+		widokWynikow.cb_szablonyRozmow.addItemListener(this);
 	}
 
 	@Override
 	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
+		if(gracz != null)
+		{
+			System.out.println("Włączam pobieranie wiadomosci KLIENT!");
+			System.out.println("PolaczenieOK: "+gracz.polaczenieOK);
+			gracz.przekazPoleCzatu(widokWynikow.ta_Czat);
+			gracz.przekazPoleWiadomosci(widokWynikow.tf_Wiadomosc);
+			gracz.wlaczPobieranieWiadomosci();
+		}
+		if(host != null)
+		{
+			System.out.println("Włączam pobieranie wiadomosci HOST!");
+			System.out.println("PolaczenieOK: "+host.polaczenieOK);
+			host.polaczenieOK = true;
+			host.przekazPoleCzatu(widokWynikow.ta_Czat);
+			host.przekazPoleWiadomosci(widokWynikow.tf_Wiadomosc);
+			host.i++;
+			host.wlaczPobieranieWiadomosci();
+		}
 	}
 
 	@Override
@@ -87,6 +116,13 @@ public class Widok_Wynikow_Zdarzenia implements ActionListener, WindowListener, 
 	@Override
 	public void mouseExited(MouseEvent e) {
 	}
+	
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		if(e.getSource() == widokWynikow.cb_szablonyRozmow)
+			wstawSzablonWiadomosci(widokWynikow.cb_szablonyRozmow.getSelectedItem().toString());
+		
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -117,7 +153,19 @@ public class Widok_Wynikow_Zdarzenia implements ActionListener, WindowListener, 
 			widokWynikow.widokGry.widokGlowny.widokOpisTworcow.widokOpisTworcowZdarzenia.setOknoMacierzyste("OknoWynikow");
 			pokazOknoOpisTworcow();
 		}
-		
+		if(e.getSource() == widokWynikow.btn_Wyslij)
+		{
+			//wyslijWiadomosc();
+			if(gracz != null)
+				gracz.wyslijWiadomosc(widokWynikow.tf_Wiadomosc.getText(), "#WP#");
+			if(host != null)
+				host.wyslijWiadomosc(widokWynikow.tf_Wiadomosc.getText(), "#WP#");
+		}
+	}
+	
+	private void wstawSzablonWiadomosci(String _wiadomosc)
+	{
+		widokWynikow.tf_Wiadomosc.setText(_wiadomosc);
 	}
 	
 	private void wyjscie()
