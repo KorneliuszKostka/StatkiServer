@@ -16,6 +16,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.text.MaskFormatter;
 
 import Statki.Gracz;
+import Statki.Uzytkownik;
 import Widoki_GUI.Widok_Dolacz;
 
 public class Widok_Dolacz_Zdarzenia implements ActionListener, WindowListener{
@@ -87,7 +88,10 @@ public class Widok_Dolacz_Zdarzenia implements ActionListener, WindowListener{
 			powrtoDoOknaGlownego();
 		if(e.getSource() == widokDolacz.btn_RozpocznijRozmieszczanieStatkow)
 		{
-			pokazOknoRozmiesc();
+			if(widokDolacz.ftf_NazwaGracza.getText().trim().equals(""))
+				komunikat("Wprowadź nazwę gracza!");
+			else
+				pokazOknoRozmiesc();
 		}
 		if(e.getSource() == widokDolacz.mnI_Wyjscie)
 			wyjscie();
@@ -114,8 +118,14 @@ public class Widok_Dolacz_Zdarzenia implements ActionListener, WindowListener{
 		{
 			widokDolacz.btn_Polacz.setEnabled(false);
 			polacz();
-			//pokazOknoRozmiesc();
+			if(widokDolacz.gracz.polaczenieOK)
+				widokDolacz.btn_RozpocznijRozmieszczanieStatkow.setEnabled(true);
 		}
+	}
+	
+	public void komunikat(String _komunikat)
+	{
+		JOptionPane.showMessageDialog(widokDolacz, _komunikat);
 	}
 	
 	public String usunSpacje(String _tekst)

@@ -21,6 +21,7 @@ import javax.swing.JTextArea;
 import javax.swing.JLabel;
 
 import Widoki_Zdarzenia.Widok_OpisAplikacji_Zdarzenia;
+
 import java.awt.Color;
 
 public class Widok_Opis_aplikacji extends JFrame {
@@ -65,11 +66,14 @@ public class Widok_Opis_aplikacji extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Statki v.1.0 Beta | SkyGames - opis gry");
 		setResizable(false);
-		try {
+		/*try {
 		      UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		    } catch (Exception e) {
 		      e.printStackTrace();
-		    }
+		    }*/
+		
+		try {UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");}
+		catch(Exception e) {}
 		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setSize(520, 430);

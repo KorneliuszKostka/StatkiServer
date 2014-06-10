@@ -63,11 +63,14 @@ public class Widok_Opis_tworcow extends JFrame {
 		setSize(520, 430);
 		setTitle("Statki v.1.0 Beta | SkyGames - opis twórców");
 		setResizable(false);
-		try {
+		/*try {
 		      UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		    } catch (Exception e) {
 		      e.printStackTrace();
-		    }
+		    }*/
+		
+		try {UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");}
+		catch(Exception e) {}
 		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setSize(520, 430);

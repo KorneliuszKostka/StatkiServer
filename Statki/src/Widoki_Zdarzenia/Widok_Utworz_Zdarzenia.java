@@ -92,12 +92,17 @@ public class Widok_Utworz_Zdarzenia implements ActionListener, WindowListener{
 		}
 		if(e.getSource() == widokUtworz.btn_RozpocznijRozmieszczanieStatkw)
 		{
-			pokazOknoRozmiesc();
+			if(widokUtworz.ftf_NazwaGracza.getText().trim().equals(""))
+				komunikat("Wprowadź nazwę gracza!");
+			else
+				pokazOknoRozmiesc();
 		}
 		if(e.getSource() == widokUtworz.btn_utworzSerwer)
 		{
 			widokUtworz.btn_utworzSerwer.setEnabled(false);
 			utworzSerwer();
+			if(widokUtworz.host.polaczenieOK)
+				widokUtworz.btn_RozpocznijRozmieszczanieStatkw.setEnabled(true);
 		}
 	}
 	
@@ -109,6 +114,11 @@ public class Widok_Utworz_Zdarzenia implements ActionListener, WindowListener{
 			widokUtworz.btn_RozpocznijRozmieszczanieStatkw.setEnabled(true);
 			widokUtworz.lb_tekst_OczekiwanieNaPrzeciwnika.setVisible(true);
 		}
+	}
+	
+	public void komunikat(String _komunikat)
+	{
+		JOptionPane.showMessageDialog(widokUtworz, _komunikat);
 	}
 	
 	public void powrotDoOknaGlownego()

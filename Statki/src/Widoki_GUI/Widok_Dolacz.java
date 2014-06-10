@@ -90,11 +90,14 @@ public class Widok_Dolacz extends JFrame {
 		setSize(520, 430);
 		setTitle("Statki v.1.0 Beta | SkyGames - dołączanie do gry");
 		setResizable(false);
-		try {
+		/*try {
 		      UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		    } catch (Exception e) {
 		      e.printStackTrace();
-		    }
+		    }*/
+		
+		try {UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");}
+		catch(Exception e) {}
 		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setSize(520, 430);
@@ -138,7 +141,7 @@ public class Widok_Dolacz extends JFrame {
 		p_przyciski.add(btn_WrocDoWyboruKategorii);
 		
 		btn_RozpocznijRozmieszczanieStatkow = new JButton("Rozpocznij rozmieszczanie statków");
-		btn_RozpocznijRozmieszczanieStatkow.setEnabled(true);
+		btn_RozpocznijRozmieszczanieStatkow.setEnabled(false);
 		btn_RozpocznijRozmieszczanieStatkow.setFont(new Font("Verdana", Font.BOLD, 10));
 		btn_RozpocznijRozmieszczanieStatkow.setBounds(250, 11, 235, 33);
 		p_przyciski.add(btn_RozpocznijRozmieszczanieStatkow);
@@ -152,19 +155,22 @@ public class Widok_Dolacz extends JFrame {
 		
 		
 		JLabel lb_tekst_IPSERWERA = new JLabel("IP Serwera:");
-		lb_tekst_IPSERWERA.setBounds(10, 11, 80, 20);
+		lb_tekst_IPSERWERA.setHorizontalAlignment(SwingConstants.RIGHT);
+		lb_tekst_IPSERWERA.setBounds(10, 11, 89, 20);
 		p_daneSerwerUzytkownik.add(lb_tekst_IPSERWERA);
 		
 		JLabel lb_tekst_NAZWAGRACZA = new JLabel("Nazwa Gracza:");
-		lb_tekst_NAZWAGRACZA.setBounds(10, 58, 80, 17);
+		lb_tekst_NAZWAGRACZA.setHorizontalAlignment(SwingConstants.RIGHT);
+		lb_tekst_NAZWAGRACZA.setBounds(10, 58, 89, 17);
 		p_daneSerwerUzytkownik.add(lb_tekst_NAZWAGRACZA);
 		
 		JLabel lb_tekst_AWATAR = new JLabel("Awatar:");
-		lb_tekst_AWATAR.setBounds(10, 100, 80, 80);
+		lb_tekst_AWATAR.setHorizontalAlignment(SwingConstants.RIGHT);
+		lb_tekst_AWATAR.setBounds(10, 100, 89, 80);
 		p_daneSerwerUzytkownik.add(lb_tekst_AWATAR);
 		
 		ImageIcon[] images;
-	    String[] nazwaAwatarow = {"awatar1", "awatar2"};
+		String[] nazwaAwatarow = {"awatar1", "awatar2", "awatar3", "awatar4", "awatar5"};
         images = new ImageIcon[nazwaAwatarow.length];
         Integer[] intArray = new Integer[nazwaAwatarow.length];
         for (int i = 0; i < nazwaAwatarow.length; i++) {
@@ -177,7 +183,7 @@ public class Widok_Dolacz extends JFrame {
         
         //Create the combo box.
         cb_AwatarGracza = new JComboBox(intArray);
-		cb_AwatarGracza.setBounds(99, 100, 126, 80);
+		cb_AwatarGracza.setBounds(109, 95, 126, 85);
         ComboBoxRenderer renderer= new ComboBoxRenderer(images);
         renderer.setPreferredSize(new Dimension(150, 80));
         cb_AwatarGracza.setRenderer(renderer);
@@ -249,10 +255,10 @@ public class Widok_Dolacz extends JFrame {
 		String maska = "";
 		//maska = "###.###.###.###";
 		ftf_IpSerwera = new JFormattedTextField();
+		ftf_IpSerwera.setText("192.168.2.10");
 		//ftf_IpSerwera.setFormatterFactory(new DefaultFormatterFactory(widokDolaczZdarzenia.stworzFormat(maska)));
 		ftf_IpSerwera.setFocusLostBehavior(JFormattedTextField.COMMIT);
-		ftf_IpSerwera.setBounds(100, 11, 125, 20);
-		ftf_IpSerwera.setText("169.254.232.56");
+		ftf_IpSerwera.setBounds(110, 8, 125, 25);
 		p_daneSerwerUzytkownik.add(ftf_IpSerwera);
 		
 		maska = "";
@@ -262,7 +268,7 @@ public class Widok_Dolacz extends JFrame {
 		ftf_NazwaGracza = new JFormattedTextField();
 		ftf_NazwaGracza.setFormatterFactory(new DefaultFormatterFactory(widokDolaczZdarzenia.stworzFormat(maska)));
 		ftf_NazwaGracza.setFocusLostBehavior(JFormattedTextField.COMMIT);
-		ftf_NazwaGracza.setBounds(100, 58, 125, 20);
+		ftf_NazwaGracza.setBounds(110, 55, 125, 25);
 		p_daneSerwerUzytkownik.add(ftf_NazwaGracza);
 		
 		widokRozmiesc = new Widok_Rozmiesc(widokGlowny, null, uzytkownik.getGracz(), uzytkownik);	

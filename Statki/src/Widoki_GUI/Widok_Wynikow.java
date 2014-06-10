@@ -1,46 +1,12 @@
 package Widoki_GUI;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Toolkit;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.UIManager;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-
-import java.awt.Font;
-
-import javax.swing.SwingConstants;
-import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
-
-import java.awt.Color;
-
-import javax.swing.JScrollPane;
-
-import java.awt.Component;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JTextArea;
-
-import java.awt.Insets;
-
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JSeparator;
-
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.border.*;
 import Statki.Gracz;
 import Statki.Host;
 import Widoki_Zdarzenia.Widok_Wynikow_Zdarzenia;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.DefaultComboBoxModel;
 
 public class Widok_Wynikow extends JFrame {
 
@@ -52,13 +18,9 @@ public class Widok_Wynikow extends JFrame {
 	private JPanel contentPane;
 	public JTextField tf_Wiadomosc;
 	private JPanel p_poleGry_GRACZ;
-	private JPanel p_litery_GRACZ;
-	private JPanel p_cyfry_GRACZ;
 	public JButton btn_ZaproponujRewanz;
 	public JButton btn_OpuscGre;
 	private JPanel p_poleGry_PRZECIWNIK;
-	private JPanel p_litery_PRZECIWNIK;
-	private JPanel p_cyfry_PRZECIWNIK;
 	public JLabel lb_AwatarGracza;
 	public JLabel lb_AwatarPrzeciwnika;
 	public JLabel lb_ZwyciescaGry;
@@ -72,7 +34,16 @@ public class Widok_Wynikow extends JFrame {
 	public JTextArea ta_Czat;
 	public JButton btn_Wyslij;
 	public JComboBox cb_szablonyRozmow;
+	private JLabel lb_tloPlanszy_PRZECIWNIKA;
+	private JLabel lb_tloPlanszy_GRACZA;
 
+	private ImageIcon img_tloPlanszy = new ImageIcon(getClass().getResource("/plansza/plansza200x200/plansza.png"));
+	public JLabel lb_NazwaGracza;
+	public JLabel lb_NazwaPrzeciwnika;
+	private JLabel label;
+	private JLabel label_1;
+	public JLabel lb_XXX;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -100,11 +71,14 @@ public class Widok_Wynikow extends JFrame {
 		
 		setTitle("Statki v.1.0 Beta | SkyGames - wyniki gry");
 		setResizable(false);
-		try {
+		/*try {
 		      UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		    } catch (Exception e) {
 		      e.printStackTrace();
-		    }
+		    }*/
+		
+		try {UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");}
+		catch(Exception e) {}
 		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setSize(630, 550);
@@ -161,92 +135,86 @@ public class Widok_Wynikow extends JFrame {
 		contentPane.setLayout(null);
 		
 		JPanel p_GRACZ = new JPanel();
-		p_GRACZ.setBounds(10, 11, 220, 120);
+		p_GRACZ.setBounds(10, 11, 203, 120);
 		contentPane.add(p_GRACZ);
 		p_GRACZ.setLayout(null);
 		
-		JLabel lb_NazwaGracza = new JLabel("NazwaGracza");
+		lb_NazwaGracza = new JLabel("NazwaGracza");
 		lb_NazwaGracza.setHorizontalAlignment(SwingConstants.CENTER);
 		lb_NazwaGracza.setFont(new Font("Verdana", Font.BOLD, 10));
-		lb_NazwaGracza.setBounds(0, 11, 200, 14);
+		lb_NazwaGracza.setBounds(0, 6, 203, 14);
 		p_GRACZ.add(lb_NazwaGracza);
 		
 		lb_AwatarGracza = new JLabel("AwatarGracza");
-		lb_AwatarGracza.setBounds(65, 36, 70, 75);
+		lb_AwatarGracza.setBounds(70, 25, 70, 75);
 		p_GRACZ.add(lb_AwatarGracza);
 		
+		label = new JLabel("MOJA PLANSZA");
+		label.setHorizontalAlignment(SwingConstants.CENTER);
+		label.setForeground(Color.BLUE);
+		label.setFont(new Font("Verdana", Font.BOLD, 10));
+		label.setBounds(10, 98, 193, 22);
+		p_GRACZ.add(label);
+		
 		JPanel p_PRZECIWNIK = new JPanel();
-		p_PRZECIWNIK.setBounds(394, 11, 220, 120);
+		p_PRZECIWNIK.setBounds(404, 11, 210, 120);
 		contentPane.add(p_PRZECIWNIK);
 		p_PRZECIWNIK.setLayout(null);
 		
-		JLabel lb_NazwaPrzeciwnika = new JLabel("NazwaGracza");
+		lb_NazwaPrzeciwnika = new JLabel("NazwaGracza");
 		lb_NazwaPrzeciwnika.setHorizontalAlignment(SwingConstants.CENTER);
 		lb_NazwaPrzeciwnika.setFont(new Font("Verdana", Font.BOLD, 10));
-		lb_NazwaPrzeciwnika.setBounds(10, 11, 200, 14);
+		lb_NazwaPrzeciwnika.setBounds(0, 6, 210, 14);
 		p_PRZECIWNIK.add(lb_NazwaPrzeciwnika);
 		
 		lb_AwatarPrzeciwnika = new JLabel("AwatarGracza");
-		lb_AwatarPrzeciwnika.setBounds(75, 36, 70, 75);
+		lb_AwatarPrzeciwnika.setBounds(70, 25, 70, 75);
 		p_PRZECIWNIK.add(lb_AwatarPrzeciwnika);
 		
+		label_1 = new JLabel("PLANSZA PRZECIWNIKA");
+		label_1.setHorizontalAlignment(SwingConstants.CENTER);
+		label_1.setForeground(Color.BLUE);
+		label_1.setFont(new Font("Verdana", Font.BOLD, 10));
+		label_1.setBounds(10, 98, 200, 22);
+		p_PRZECIWNIK.add(label_1);
+		
 		JPanel p_KtoWygral = new JPanel();
-		p_KtoWygral.setBounds(230, 11, 165, 120);
+		p_KtoWygral.setBounds(214, 11, 188, 120);
 		contentPane.add(p_KtoWygral);
 		p_KtoWygral.setLayout(null);
 		
 		JLabel lb_tekst_WojneStatkowWygral = new JLabel("Wojnę statków wygrał");
 		lb_tekst_WojneStatkowWygral.setHorizontalAlignment(SwingConstants.CENTER);
 		lb_tekst_WojneStatkowWygral.setFont(new Font("Verdana", Font.PLAIN, 11));
-		lb_tekst_WojneStatkowWygral.setBounds(0, 30, 165, 20);
+		lb_tekst_WojneStatkowWygral.setBounds(0, 30, 190, 20);
 		p_KtoWygral.add(lb_tekst_WojneStatkowWygral);
 		
-		lb_ZwyciescaGry = new JLabel("XXXXXXXXXXXXXXXX");
+		lb_ZwyciescaGry = new JLabel("");
 		lb_ZwyciescaGry.setForeground(new Color(50, 205, 50));
 		lb_ZwyciescaGry.setHorizontalAlignment(SwingConstants.CENTER);
-		lb_ZwyciescaGry.setFont(new Font("Verdana", Font.BOLD, 12));
-		lb_ZwyciescaGry.setBounds(0, 55, 165, 14);
+		lb_ZwyciescaGry.setFont(new Font("Verdana", Font.BOLD, 14));
+		lb_ZwyciescaGry.setBounds(0, 55, 190, 14);
 		p_KtoWygral.add(lb_ZwyciescaGry);
 		
 		JPanel p_obszarGracza = new JPanel();
 		p_obszarGracza.setLayout(null);
-		p_obszarGracza.setBounds(10, 139, 220, 200);
+		p_obszarGracza.setBounds(10, 132, 220, 207);
 		contentPane.add(p_obszarGracza);
-		
-		p_litery_GRACZ = new JPanel();
-		p_litery_GRACZ.setLayout(null);
-		p_litery_GRACZ.setBounds(0, 20, 25, 180);
-		p_obszarGracza.add(p_litery_GRACZ);
 		
 		p_poleGry_GRACZ = new JPanel();
 		p_poleGry_GRACZ.setLayout(null);
-		p_poleGry_GRACZ.setBounds(25, 20, 180, 180);
+		p_poleGry_GRACZ.setBounds(10, 0, 205, 205);
 		p_obszarGracza.add(p_poleGry_GRACZ);
-		
-		p_cyfry_GRACZ = new JPanel();
-		p_cyfry_GRACZ.setLayout(null);
-		p_cyfry_GRACZ.setBounds(25, 0, 180, 20);
-		p_obszarGracza.add(p_cyfry_GRACZ);
 		
 		JPanel p_obszarPrzeciwnika = new JPanel();
 		p_obszarPrzeciwnika.setLayout(null);
-		p_obszarPrzeciwnika.setBounds(394, 139, 220, 200);
+		p_obszarPrzeciwnika.setBounds(394, 132, 220, 207);
 		contentPane.add(p_obszarPrzeciwnika);
-		
-		p_litery_PRZECIWNIK = new JPanel();
-		p_litery_PRZECIWNIK.setLayout(null);
-		p_litery_PRZECIWNIK.setBounds(15, 20, 25, 180);
-		p_obszarPrzeciwnika.add(p_litery_PRZECIWNIK);
 		
 		p_poleGry_PRZECIWNIK = new JPanel();
 		p_poleGry_PRZECIWNIK.setLayout(null);
-		p_poleGry_PRZECIWNIK.setBounds(40, 20, 180, 180);
+		p_poleGry_PRZECIWNIK.setBounds(10, 0, 205, 205);
 		p_obszarPrzeciwnika.add(p_poleGry_PRZECIWNIK);
-		
-		p_cyfry_PRZECIWNIK = new JPanel();
-		p_cyfry_PRZECIWNIK.setLayout(null);
-		p_cyfry_PRZECIWNIK.setBounds(40, 0, 180, 20);
-		p_obszarPrzeciwnika.add(p_cyfry_PRZECIWNIK);
 		
 		JPanel p_CZAT = new JPanel();
 		p_CZAT.setLayout(null);
@@ -282,7 +250,7 @@ public class Widok_Wynikow extends JFrame {
 		
 		JPanel p_OpcjeOknaWynikow = new JPanel();
 		p_OpcjeOknaWynikow.setLayout(null);
-		p_OpcjeOknaWynikow.setBounds(230, 139, 165, 200);
+		p_OpcjeOknaWynikow.setBounds(230, 132, 165, 207);
 		contentPane.add(p_OpcjeOknaWynikow);
 		
 		JLabel lb_tekst_CoCheszRobicDalej = new JLabel("Co chcesz zrobić dalej ?");
@@ -292,25 +260,33 @@ public class Widok_Wynikow extends JFrame {
 		p_OpcjeOknaWynikow.add(lb_tekst_CoCheszRobicDalej);
 		
 		btn_ZaproponujRewanz = new JButton("Zaproponuj rewanż");
-		btn_ZaproponujRewanz.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		btn_ZaproponujRewanz.setEnabled(true);
 		btn_ZaproponujRewanz.setMargin(new Insets(2, 5, 2, 5));
 		btn_ZaproponujRewanz.setFont(new Font("Verdana", Font.BOLD, 11));
-		btn_ZaproponujRewanz.setBounds(10, 66, 145, 25);
+		btn_ZaproponujRewanz.setBounds(0, 66, 165, 25);
 		p_OpcjeOknaWynikow.add(btn_ZaproponujRewanz);
 		
 		btn_OpuscGre = new JButton("Opuść grę");
 		btn_OpuscGre.setMargin(new Insets(2, 5, 2, 5));
 		btn_OpuscGre.setFont(new Font("Verdana", Font.BOLD, 11));
-		btn_OpuscGre.setBounds(10, 102, 145, 25);
+		btn_OpuscGre.setBounds(0, 102, 165, 25);
 		p_OpcjeOknaWynikow.add(btn_OpuscGre);
 		
 		widokWynikowZdarzenia = new Widok_Wynikow_Zdarzenia(this, host, gracz);
-		
-		widokWynikowZdarzenia.stworzPolaGry(widokWynikowZdarzenia.lb_polaGry_GRACZ, 18, 18, 18, p_poleGry_GRACZ, p_litery_GRACZ, p_cyfry_GRACZ, 17, 15);
-		widokWynikowZdarzenia.stworzPolaGry(widokWynikowZdarzenia.lb_polaGry_PRZECIWNIK, 18, 18, 18, p_poleGry_PRZECIWNIK, p_litery_PRZECIWNIK, p_cyfry_PRZECIWNIK, 17, 15);
 
+		widokWynikowZdarzenia.stworzPolaGry("pole przeciwnika", false, false, widokWynikowZdarzenia.lb_polaGry_PRZECIWNIK, 18, 18, 18, p_poleGry_PRZECIWNIK, null, null, 16, 16);
+		widokWynikowZdarzenia.stworzPolaGry("pole gracza", false, true, widokWynikowZdarzenia.lb_polaGry_GRACZ, 18, 18, 18, p_poleGry_GRACZ, null, null, 16, 16);
+
+		lb_tloPlanszy_PRZECIWNIKA = new JLabel(img_tloPlanszy);
+		lb_tloPlanszy_PRZECIWNIKA.setBounds(0, 0, 205, 205);
+		p_poleGry_PRZECIWNIK.add(lb_tloPlanszy_PRZECIWNIKA);
+		
+		lb_tloPlanszy_GRACZA = new JLabel(img_tloPlanszy);
+		lb_tloPlanszy_GRACZA.setBounds(0, 0, 205, 205);
+		p_poleGry_GRACZ.add(lb_tloPlanszy_GRACZA);
+		
+		lb_XXX = new JLabel("XX");
+		lb_XXX.setBounds(10, 501, 604, 14);
+		contentPane.add(lb_XXX);
 	}
 }

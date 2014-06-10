@@ -1,23 +1,9 @@
 package Widoki_Zdarzenia;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.*;
+import java.awt.event.*;
 
-import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.border.LineBorder;
 
 import Statki.Uzytkownik;
@@ -26,6 +12,11 @@ import Widoki_GUI.Widok_Rozmiesc;
 
 public class Widok_Rozmiesc_Zdarzenia implements ActionListener, WindowListener, ItemListener, MouseListener{
 	private Widok_Rozmiesc widokRozmiesc;
+	
+	private ImageIcon img_poleStatku = new ImageIcon(getClass().getResource("/plansza/plansza220x220/statek.png"));
+	private ImageIcon img_zaznaczonePole = new ImageIcon(getClass().getResource("/plansza/plansza220x220/zaznaczonePole.png"));
+	private ImageIcon img_zwyklePole = new ImageIcon(getClass().getResource("/plansza/plansza220x220/pole.png"));
+	private ImageIcon img_poleZablokowane = new ImageIcon(getClass().getResource("/plansza/plansza220x220/poleZablokowane.png"));
 	
 	public Widok_Rozmiesc_Zdarzenia(Widok_Rozmiesc _widokRozmiesc) {
 		widokRozmiesc = _widokRozmiesc;
@@ -40,6 +31,8 @@ public class Widok_Rozmiesc_Zdarzenia implements ActionListener, WindowListener,
 		widokRozmiesc.mnI_oTworcach.addActionListener(this);
 		widokRozmiesc.mnI_UstawieniaLokalne.addActionListener(this);
 		widokRozmiesc.mnI_Wyjscie.addActionListener(this);
+		
+		widokRozmiesc.cb_RodzajStatku.addItemListener(this);
 	}
 
 	@Override
@@ -72,9 +65,9 @@ public class Widok_Rozmiesc_Zdarzenia implements ActionListener, WindowListener,
 	public void windowDeactivated(WindowEvent e) {
 	}
 
+	public boolean czyRozmieszczonoLosowo;
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
 		
 		if(e.getSource() == widokRozmiesc.mnI_UstawieniaLokalne)
 		{
@@ -106,10 +99,7 @@ public class Widok_Rozmiesc_Zdarzenia implements ActionListener, WindowListener,
 		}
 		if(e.getSource() == widokRozmiesc.btn_WyczyscPlansze)
 		{
-			widokRozmiesc.uzytkownik.plansza.czyscPlansze();
-			przerysujPlansze();
-			widokRozmiesc.btn_RozmiescLosowo.setEnabled(true);
-			widokRozmiesc.cb_RodzajStatku.setModel(new DefaultComboBoxModel(new String[] {"", "jednomasztowiec", "dwumasztowiec", "trójmasztowiec", "czteromasztowiec"}));
+			czyscPlansze();
 		}
 		if(e.getSource() == widokRozmiesc.btn_RozmiescLosowo)
 		{
@@ -117,38 +107,73 @@ public class Widok_Rozmiesc_Zdarzenia implements ActionListener, WindowListener,
 			przerysujPlansze();
 			widokRozmiesc.btn_RozmiescLosowo.setEnabled(false);
 			widokRozmiesc.btn_WyczyscPlansze.setEnabled(true);
+			
+			widokRozmiesc.lblStatek.setVisible(false);
+			widokRozmiesc.cb_RodzajStatku.setVisible(false);
+			if(widokRozmiesc.cb_Rozmieszczenie.isVisible())
+			{
+				widokRozmiesc.lblRozmieszczenie.setVisible(false);
+				widokRozmiesc.cb_Rozmieszczenie.setVisible(false);
+			}
+			czyRozmieszczonoLosowo = true;
+			widokRozmiesc.btn_RozpocznijRozgrywke.setEnabled(true);
 		}
 	}
 
 	@Override
 	public void itemStateChanged(ItemEvent e) {
+		
+		if(e.getSource() == widokRozmiesc.cb_RodzajStatku)
+		{
+			if(widokRozmiesc.cb_RodzajStatku.getSelectedItem().toString().equals("jednomasztowiec"))
+			{
+				widokRozmiesc.lblRozmieszczenie.setVisible(false);
+				widokRozmiesc.cb_Rozmieszczenie.setVisible(false);
+			}
+			else
+			{
+				widokRozmiesc.lblRozmieszczenie.setVisible(true);
+				widokRozmiesc.cb_Rozmieszczenie.setVisible(true);
+			}
+		}
 	}
 	
+	int liczbaKlikania = 0;
+	boolean czyMoznaKlikac = true;
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		
-		for(int i = 0;i < 10; i++)
-			for(int j = 0;j < 10; j++)
-				if(e.getSource() == lb_polaGry[j][i])
+		if(czyMoznaKlikac)
+		{
+			if(!czyRozmieszczonoLosowo)
+			{
+				liczbaKlikania++;
+				
+				for(int i = 0;i < 10; i++)
+					for(int j = 0;j < 10; j++)
+						if(e.getSource() == lb_polaGry[j][i])
+						{
+							if(!widokRozmiesc.cb_RodzajStatku.getSelectedItem().toString().equals("") && 
+									!widokRozmiesc.cb_Rozmieszczenie.getSelectedItem().toString().equals(""))
+							{
+								if(liczbaKlikania > 0)
+									widokRozmiesc.btn_RozmiescLosowo.setEnabled(false);
+								widokRozmiesc.uzytkownik.plansza.ustawStatek(widokRozmiesc.cb_RodzajStatku.getSelectedItem().toString(), 
+										widokRozmiesc.cb_Rozmieszczenie.getSelectedItem().toString(), j, i);
+								ustawListeRozwijana_ROZMIAR();
+								przerysujPlansze();
+							}
+						}
+				System.out.print("-----------------------------------------------------------\n");
+				//System.out.print("Jednomasztowiec: "+widokRozmiesc.uzytkownik.plansza.getLiczbaStatkow("jednomasztowiec")+"\n");
+				for(int i=0;i<10;i++)
 				{
-					if(!widokRozmiesc.cb_RodzajStatku.getSelectedItem().toString().equals("") && 
-							!widokRozmiesc.cb_Rozmieszczenie.getSelectedItem().toString().equals(""))
+					for(int j=0;j<10;j++)
 					{
-						widokRozmiesc.uzytkownik.plansza.ustawStatek(widokRozmiesc.cb_RodzajStatku.getSelectedItem().toString(), 
-								widokRozmiesc.cb_Rozmieszczenie.getSelectedItem().toString(), j, i);
-						ustawListeRozwijana_ROZMIAR();
-						przerysujPlansze();
+						System.out.print(widokRozmiesc.uzytkownik.plansza.l_polaPlanszy_GRACZ[j][i].getRodzajPola()+" ");
+						if(j == 9)
+							System.out.println();
 					}
 				}
-		System.out.print("-----------------------------------------------------------\n");
-		//System.out.print("Jednomasztowiec: "+widokRozmiesc.uzytkownik.plansza.getLiczbaStatkow("jednomasztowiec")+"\n");
-		for(int i=0;i<10;i++)
-		{
-			for(int j=0;j<10;j++)
-			{
-				System.out.print(widokRozmiesc.uzytkownik.plansza.l_polaPlanszy[j][i].getRodzajPola()+" ");
-				if(j == 9)
-					System.out.println();
 			}
 		}
 	}
@@ -164,22 +189,63 @@ public class Widok_Rozmiesc_Zdarzenia implements ActionListener, WindowListener,
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		if(widokRozmiesc.cb_RodzajStatku.getItemCount() > 0)
-			for(int i = 0;i < 10; i++)
-				for(int j = 0;j < 10; j++)
-					if(e.getSource() == lb_polaGry[j][i])
-						zaznaczMaszty(true, j, i, widokRozmiesc.cb_RodzajStatku, widokRozmiesc.cb_Rozmieszczenie);
-		
+		if(!czyRozmieszczonoLosowo)
+		{
+			if(widokRozmiesc.cb_RodzajStatku.getItemCount() > 0)
+				for(int i = 0;i < 10; i++)
+					for(int j = 0;j < 10; j++)
+						if(e.getSource() == lb_polaGry[j][i])
+						{
+							if(widokRozmiesc.uzytkownik.plansza.sprawdzWspolrzedneUstawianegoStatku(widokRozmiesc.cb_RodzajStatku.getSelectedItem().toString(), 
+									widokRozmiesc.cb_Rozmieszczenie.getSelectedItem().toString(), j, i))
+							{
+								zaznaczMaszty(true, j, i, widokRozmiesc.cb_RodzajStatku, widokRozmiesc.cb_Rozmieszczenie);
+							}
+						}
+		}	
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		if(widokRozmiesc.cb_RodzajStatku.getItemCount() > 0)
-			for(int i = 0;i < 10; i++)
-				for(int j = 0;j < 10; j++)
-					if(e.getSource() == lb_polaGry[j][i])
-						zaznaczMaszty(false ,j, i, widokRozmiesc.cb_RodzajStatku, widokRozmiesc.cb_Rozmieszczenie);
+		if(!czyRozmieszczonoLosowo)
+		{
+			if(widokRozmiesc.cb_RodzajStatku.getItemCount() > 0)
+				for(int i = 0;i < 10; i++)
+					for(int j = 0;j < 10; j++)
+						if(e.getSource() == lb_polaGry[j][i])
+							if(widokRozmiesc.uzytkownik.plansza.sprawdzWspolrzedneUstawianegoStatku(widokRozmiesc.cb_RodzajStatku.getSelectedItem().toString(), 
+									widokRozmiesc.cb_Rozmieszczenie.getSelectedItem().toString(), j, i))
+							{
+								zaznaczMaszty(false ,j, i, widokRozmiesc.cb_RodzajStatku, widokRozmiesc.cb_Rozmieszczenie);
+							}
+		}
 					
+	}
+	
+	public void czyscPlansze()
+	{
+		widokRozmiesc.uzytkownik.plansza.czyscPlansze();
+		przerysujPlansze();
+		widokRozmiesc.btn_RozmiescLosowo.setEnabled(true);
+		widokRozmiesc.cb_RodzajStatku.setModel(new DefaultComboBoxModel(new String[] {"jednomasztowiec", "dwumasztowiec", "trójmasztowiec", "czteromasztowiec"}));
+		widokRozmiesc.btn_RozmiescLosowo.setEnabled(true);
+		liczbaKlikania = 0;
+		czyRozmieszczonoLosowo = false;
+		widokRozmiesc.lblStatek.setVisible(true);
+		widokRozmiesc.cb_RodzajStatku.setVisible(true);
+		if(!widokRozmiesc.cb_RodzajStatku.getSelectedItem().toString().equals("jednomasztowiec"))
+		{
+			widokRozmiesc.lblRozmieszczenie.setVisible(true);
+			widokRozmiesc.cb_Rozmieszczenie.setVisible(true);
+		}
+		else
+		{
+			widokRozmiesc.lblRozmieszczenie.setVisible(false);
+			widokRozmiesc.cb_Rozmieszczenie.setVisible(false);
+		}
+		
+		widokRozmiesc.btn_RozpocznijRozgrywke.setEnabled(false);
+		czyMoznaKlikac = true;
 	}
 	
 	public void ustawListeRozwijana_ROZMIAR()
@@ -201,6 +267,29 @@ public class Widok_Rozmiesc_Zdarzenia implements ActionListener, WindowListener,
 		widokRozmiesc.cb_RodzajStatku.setModel(model);
 		if(widokRozmiesc.cb_RodzajStatku.getItemCount() > 1)
 			widokRozmiesc.cb_RodzajStatku.setSelectedItem(1);
+		
+		boolean czyJestJednomasztowiec = false;
+		
+		if(widokRozmiesc.cb_RodzajStatku.getItemCount() > 0)
+		{
+			widokRozmiesc.lblStatek.setVisible(true);
+			widokRozmiesc.cb_RodzajStatku.setVisible(true);
+			
+			if(!widokRozmiesc.cb_RodzajStatku.getSelectedItem().toString().equals("jednomasztowiec"))
+			{
+				widokRozmiesc.lblRozmieszczenie.setVisible(true);
+				widokRozmiesc.cb_Rozmieszczenie.setVisible(true);
+			}
+		}
+		else
+		{
+			widokRozmiesc.lblStatek.setVisible(false);
+			widokRozmiesc.cb_RodzajStatku.setVisible(false);
+			widokRozmiesc.lblRozmieszczenie.setVisible(false);
+			widokRozmiesc.cb_Rozmieszczenie.setVisible(false);
+			widokRozmiesc.btn_RozpocznijRozgrywke.setEnabled(true);
+			czyMoznaKlikac = false;
+		}
 	}
 	
 	public Uzytkownik getUzytkownik()
@@ -208,18 +297,34 @@ public class Widok_Rozmiesc_Zdarzenia implements ActionListener, WindowListener,
 		return widokRozmiesc.uzytkownik;
 	}
 	
+	int liczbaPrzerysowaniaPlanszy = 0;
 	public void przerysujPlansze()
 	{
-		for(int k=0;k<10;k++)
-			for(int l=0;l<10;l++)
-			{
-				if(widokRozmiesc.uzytkownik.plansza.l_polaPlanszy[l][k].getRodzajPola().equals("1"))	
-					lb_polaGry[l][k].setBackground(Color.BLUE);
-				else if(widokRozmiesc.uzytkownik.plansza.l_polaPlanszy[l][k].getRodzajPola().equals("X"))
-					lb_polaGry[l][k].setBackground(Color.RED);
-				else
-					lb_polaGry[l][k].setBackground(new Color(240,240,240));
-			}
+		liczbaPrzerysowaniaPlanszy++;
+			for(int k=0;k<10;k++)
+				for(int l=0;l<10;l++)
+				{
+					if(liczbaPrzerysowaniaPlanszy > 1)
+					{
+						if(widokRozmiesc.uzytkownik.plansza.l_polaPlanszy_GRACZ[l][k].getRodzajPola().equals("1"))
+						{
+							//lb_polaGry[l][k].setBackground(Color.BLUE);
+							lb_polaGry[l][k].setIcon(img_poleStatku);
+						}
+						else if(widokRozmiesc.uzytkownik.plansza.l_polaPlanszy_GRACZ[l][k].getRodzajPola().equals("X"))
+						{
+							//lb_polaGry[l][k].setBackground(Color.RED);
+							lb_polaGry[l][k].setIcon(img_poleZablokowane);
+						}
+						else
+						{
+							//lb_polaGry[l][k].setBackground(new Color(240,240,240));
+							lb_polaGry[l][k].setIcon(img_zwyklePole);
+						}
+					}
+					else
+						lb_polaGry[l][k].setIcon(img_zwyklePole);
+				}
 	}
 	
 	private void wyjscie()
@@ -257,7 +362,7 @@ public class Widok_Rozmiesc_Zdarzenia implements ActionListener, WindowListener,
 		Widok_Gry widokGry = new Widok_Gry(widokRozmiesc.widokGlowny, widokRozmiesc.host, widokRozmiesc.gracz, widokRozmiesc.uzytkownik);
 		widokRozmiesc.setVisible(false);
 		//widokRozmiesc.widokGry.setVisible(true);
-		widokGry.lb_AwatarGracza.setText(widokRozmiesc.uzytkownik.plansza.l_polaPlanszy[0][0].getRodzajPola());
+		widokGry.lb_AwatarGracza.setText(widokRozmiesc.uzytkownik.plansza.l_polaPlanszy_GRACZ[0][0].getRodzajPola());
 		widokGry.setVisible(true);
 	}
 	
@@ -269,35 +374,37 @@ public class Widok_Rozmiesc_Zdarzenia implements ActionListener, WindowListener,
 		lb_polaGry = new JLabel[10][10];
 		String litery[] = {"A","B","C","D","E","F","G","H","I","J"}; 
 		
-		int x = -20, y = -20;
+		int x = 0, y = 0;
 		for(int i = 0;i < 10; i++)
 		{
-			x = -20;
+			x = 0;
 			y+=20;
 			for(int j = 0;j < 10; j++)
 			{
 				x+=20;
 				lb_polaGry[j][i] = new JLabel();
 				lb_polaGry[j][i].setBounds(x, y, 20, 20);
-				lb_polaGry[j][i].setText(String.valueOf(j)+String.valueOf(i));
-				lb_polaGry[j][i].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
-				lb_polaGry[j][i].setOpaque(true);
+				//lb_polaGry[j][i].setText(String.valueOf(j)+String.valueOf(i));
+				//lb_polaGry[j][i].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
+				lb_polaGry[j][i].setOpaque(false);
 				lb_polaGry[j][i].addMouseListener(this);
 				_obszarPol.add(lb_polaGry[j][i]);
 				
-				lb_cyfry[i] = new JLabel();
+				/*lb_cyfry[i] = new JLabel();
 				lb_cyfry[i].setBounds(x, 0, 20, 20);
 				lb_cyfry[i].setFont(new Font("Verdana", Font.BOLD, 12));
 				lb_cyfry[i].setText(String.valueOf(j+1));
+				lb_cyfry[i].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 1));
 				lb_cyfry[i].setHorizontalTextPosition(SwingConstants.CENTER);
-				_obszarCyfr.add(lb_cyfry[i]);
+				_obszarCyfr.add(lb_cyfry[i]);*/
 			}
-			lb_litery[i] = new JLabel();
-			lb_litery[i].setBounds(0, y, 20, 20);
+			/*lb_litery[i] = new JLabel();
+			lb_litery[i].setBounds(3, y, 20, 20);
 			lb_litery[i].setFont(new Font("Verdana", Font.BOLD, 12));
 			lb_litery[i].setText(litery[i]);
+			lb_litery[i].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 1));
 			lb_litery[i].setHorizontalTextPosition(SwingConstants.CENTER);
-			_obszarLiter.add(lb_litery[i]);
+			_obszarLiter.add(lb_litery[i]);*/
 		}
 	}
 
@@ -310,138 +417,184 @@ public class Widok_Rozmiesc_Zdarzenia implements ActionListener, WindowListener,
 		int x = _pozXpoczatekStatku;
 		int y = _pozYpoczatekStatku;
 		
-		if(rozmieszczenie.equals("pionowo"))
+		if(rodzajStatku.equals("jednomasztowiec"))
 		{
-			if(rodzajStatku.equals("jednomasztowiec"))
+			if(_zdarzenie)
 			{
-				if(_zdarzenie)
-					lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
-				else 
-				{
-					lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
-				}
+				//lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
+				lb_polaGry[x][y].setIcon(img_zaznaczonePole);
 			}
-			if(rodzajStatku.equals("dwumasztowiec"))
+			else 
 			{
-				if(_pozYpoczatekStatku <= 8)
-				{
-					if(_zdarzenie)
-					{
-					lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
-					lb_polaGry[x][y+1].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
-					}
-					else 
-					{
-						lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
-						lb_polaGry[x][y+1].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
-					}
-				}
-			}
-			if(rodzajStatku.equals("trójmasztowiec"))
-			{
-				if(_pozYpoczatekStatku <= 7)
-				{
-					if(_zdarzenie)
-					{
-					lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
-					lb_polaGry[x][y+1].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
-					lb_polaGry[x][y+2].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
-					}
-					else 
-					{
-						lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
-						lb_polaGry[x][y+1].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
-						lb_polaGry[x][y+2].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
-					}
-				}
-			}
-			if(rodzajStatku.equals("czteromasztowiec"))
-			{
-				if(_pozYpoczatekStatku <= 6)
-				{
-					if(_zdarzenie)
-					{
-					lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
-					lb_polaGry[x][y+1].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
-					lb_polaGry[x][y+2].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
-					lb_polaGry[x][y+3].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
-					}
-					else 
-					{
-						lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
-						lb_polaGry[x][y+1].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
-						lb_polaGry[x][y+2].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
-						lb_polaGry[x][y+3].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
-					}
-				}
+				//lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
+				lb_polaGry[x][y].setIcon(img_zwyklePole);
 			}
 		}
-		if(rozmieszczenie.equals("poziomo"))
-		{
-			if(rodzajStatku.equals("jednomasztowiec"))
+		else
+			if(rozmieszczenie.equals("pionowo"))
 			{
-				if(_zdarzenie)
-				lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
-				else 
+				
+				if(rodzajStatku.equals("dwumasztowiec"))
 				{
-					lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
+					if(_pozYpoczatekStatku <= 8)
+					{
+						if(_zdarzenie)
+						{
+						//lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
+						//lb_polaGry[x][y+1].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
+						lb_polaGry[x][y].setIcon(img_zaznaczonePole);
+						lb_polaGry[x][y+1].setIcon(img_zaznaczonePole);
+						}
+						else 
+						{
+							//lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
+							//lb_polaGry[x][y+1].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
+							lb_polaGry[x][y].setIcon(img_zwyklePole);
+							lb_polaGry[x][y+1].setIcon(img_zwyklePole);
+						}
+					}
+				}
+				if(rodzajStatku.equals("trójmasztowiec"))
+				{
+					if(_pozYpoczatekStatku <= 7)
+					{
+						if(_zdarzenie)
+						{
+						//lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
+						//lb_polaGry[x][y+1].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
+						//lb_polaGry[x][y+2].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
+						lb_polaGry[x][y].setIcon(img_zaznaczonePole);
+						lb_polaGry[x][y+1].setIcon(img_zaznaczonePole);
+						lb_polaGry[x][y+2].setIcon(img_zaznaczonePole);
+						}
+						else 
+						{
+							//lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
+							//lb_polaGry[x][y+1].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
+							//lb_polaGry[x][y+2].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
+							lb_polaGry[x][y].setIcon(img_zwyklePole);
+							lb_polaGry[x][y+1].setIcon(img_zwyklePole);
+							lb_polaGry[x][y+2].setIcon(img_zwyklePole);
+						}
+					}
+				}
+				if(rodzajStatku.equals("czteromasztowiec"))
+				{
+					if(_pozYpoczatekStatku <= 6)
+					{
+						if(_zdarzenie)
+						{
+						//lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
+						//lb_polaGry[x][y+1].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
+						//lb_polaGry[x][y+2].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
+						//lb_polaGry[x][y+3].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
+						lb_polaGry[x][y].setIcon(img_zaznaczonePole);
+						lb_polaGry[x][y+1].setIcon(img_zaznaczonePole);
+						lb_polaGry[x][y+2].setIcon(img_zaznaczonePole);
+						lb_polaGry[x][y+3].setIcon(img_zaznaczonePole);
+						}
+						else 
+						{
+							//lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
+							//lb_polaGry[x][y+1].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
+							//lb_polaGry[x][y+2].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
+							//lb_polaGry[x][y+3].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
+							lb_polaGry[x][y].setIcon(img_zwyklePole);
+							lb_polaGry[x][y+1].setIcon(img_zwyklePole);
+							lb_polaGry[x][y+2].setIcon(img_zwyklePole);
+							lb_polaGry[x][y+3].setIcon(img_zwyklePole);
+						}
+					}
 				}
 			}
-			if(rodzajStatku.equals("dwumasztowiec"))
+			if(rozmieszczenie.equals("poziomo"))
 			{
-				if(_pozXpoczatekStatku <= 8)
+				/*if(rodzajStatku.equals("jednomasztowiec"))
 				{
 					if(_zdarzenie)
 					{
-					lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
-					lb_polaGry[x+1][y].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
+						//lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
+						lb_polaGry[x][y].setIcon(img_zaznaczonePole);
 					}
 					else 
 					{
-						lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
-						lb_polaGry[x+1][y].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
+						//lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
+						lb_polaGry[x][y].setIcon(img_zwyklePole);
 					}
-				}
-			}
-			if(rodzajStatku.equals("trójmasztowiec"))
-			{
-				if(_pozXpoczatekStatku <= 7)
+				}*/
+				if(rodzajStatku.equals("dwumasztowiec"))
 				{
-					if(_zdarzenie)
+					if(_pozXpoczatekStatku <= 8)
 					{
-					lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
-					lb_polaGry[x+1][y].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
-					lb_polaGry[x+2][y].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
-					}
-					else 
-					{
-						lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
-						lb_polaGry[x+1][y].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
-						lb_polaGry[x+2][y].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
+						if(_zdarzenie)
+						{
+						//lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
+						//lb_polaGry[x+1][y].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
+						lb_polaGry[x][y].setIcon(img_zaznaczonePole);
+						lb_polaGry[x+1][y].setIcon(img_zaznaczonePole);
+						}
+						else 
+						{
+							//lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
+							//lb_polaGry[x+1][y].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
+							lb_polaGry[x][y].setIcon(img_zwyklePole);
+							lb_polaGry[x+1][y].setIcon(img_zwyklePole);
+						}
 					}
 				}
-			}
-			if(rodzajStatku.equals("czteromasztowiec"))
-			{
-				if(_pozXpoczatekStatku <= 6)
+				if(rodzajStatku.equals("trójmasztowiec"))
 				{
-					if(_zdarzenie)
+					if(_pozXpoczatekStatku <= 7)
 					{
-					lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
-					lb_polaGry[x+1][y].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
-					lb_polaGry[x+2][y].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
-					lb_polaGry[x+3][y].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
+						if(_zdarzenie)
+						{
+						//lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
+						//lb_polaGry[x+1][y].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
+						//lb_polaGry[x+2][y].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
+						lb_polaGry[x][y].setIcon(img_zaznaczonePole);
+						lb_polaGry[x+1][y].setIcon(img_zaznaczonePole);
+						lb_polaGry[x+2][y].setIcon(img_zaznaczonePole);
+						}
+						else 
+						{
+							//lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
+							//lb_polaGry[x+1][y].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
+							//lb_polaGry[x+2][y].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
+							lb_polaGry[x][y].setIcon(img_zwyklePole);
+							lb_polaGry[x+1][y].setIcon(img_zwyklePole);
+							lb_polaGry[x+2][y].setIcon(img_zwyklePole);
+						}
 					}
-					else 
+				}
+				if(rodzajStatku.equals("czteromasztowiec"))
+				{
+					if(_pozXpoczatekStatku <= 6)
 					{
-						lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
-						lb_polaGry[x+1][y].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
-						lb_polaGry[x+2][y].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
-						lb_polaGry[x+3][y].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
+						if(_zdarzenie)
+						{
+						//lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
+						//lb_polaGry[x+1][y].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
+						//lb_polaGry[x+2][y].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
+						//lb_polaGry[x+3][y].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
+						lb_polaGry[x][y].setIcon(img_zaznaczonePole);
+						lb_polaGry[x+1][y].setIcon(img_zaznaczonePole);
+						lb_polaGry[x+2][y].setIcon(img_zaznaczonePole);
+						lb_polaGry[x+3][y].setIcon(img_zaznaczonePole);
+						}
+						else 
+						{
+							//lb_polaGry[x][y].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
+							//lb_polaGry[x+1][y].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
+							//lb_polaGry[x+2][y].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
+							//lb_polaGry[x+3][y].setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240), 3));
+							lb_polaGry[x][y].setIcon(img_zwyklePole);
+							lb_polaGry[x+1][y].setIcon(img_zwyklePole);
+							lb_polaGry[x+2][y].setIcon(img_zwyklePole);
+							lb_polaGry[x+3][y].setIcon(img_zwyklePole);
+						}
 					}
 				}
 			}
-		}
 		
 		//lb_polaGry[j][i].setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
 		

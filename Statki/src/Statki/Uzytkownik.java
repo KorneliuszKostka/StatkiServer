@@ -15,17 +15,25 @@ public class Uzytkownik {
 	private String nazwaGracza;
 	public int nrAwatara;
 	public Plansza plansza;
+	private boolean czyMoznaWykonacRuch;
+	
+	public String ktoWygral;
+	public boolean czySkapitulowal;
 	
 	public Uzytkownik(Host _host) {
 		port = 50007;
 		host = _host;
 		plansza = new Plansza();
+		czyMoznaWykonacRuch = true;
+		ktoWygral = "";
+		czySkapitulowal = false;
 	}
 
 	public Uzytkownik(Gracz _gracz) {
 		port = 50007;
 		gracz = _gracz;
 		plansza = new Plansza();
+		czyMoznaWykonacRuch = false;
 	}
 	
 	public void wybierzNazwe(String _nazwaGracza) {
@@ -35,6 +43,16 @@ public class Uzytkownik {
 	public String getNazwaGracza()
 	{
 		return nazwaGracza;
+	}
+	
+	public void setMozliwoscWykonaniaRuchu(boolean _czyWolno)
+	{
+		czyMoznaWykonacRuch = _czyWolno;
+	}
+	
+	public boolean getMozliwoscWykonaniaRuchu()
+	{
+		return czyMoznaWykonacRuch;
 	}
 	
 	public ImageIcon[] awatary;

@@ -31,6 +31,8 @@ import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JComboBox;
+import java.awt.Color;
+import java.awt.SystemColor;
 
 public class Widok_Utworz extends JFrame {
 	
@@ -81,11 +83,14 @@ public class Widok_Utworz extends JFrame {
 		setSize(520, 430);
 		setTitle("Statki v.1.0 Beta | SkyGames - tworzenie serwera");
 		setResizable(false);
-		try {
+		/*try {
 		      UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		    } catch (Exception e) {
 		      e.printStackTrace();
-		    }
+		    }*/
+		
+		try {UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");}
+		catch(Exception e) {}
 		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setSize(520, 430);
@@ -150,11 +155,10 @@ public class Widok_Utworz extends JFrame {
 		p_naglowekOkna.add(lb_naglowek1);
 		
 		tf_naglowek2_TwojeIP = new JTextField("Twoje IP:");
-		tf_naglowek2_TwojeIP.setOpaque(false);
-		tf_naglowek2_TwojeIP.setBorder(null);
+		tf_naglowek2_TwojeIP.setBackground(SystemColor.menu);
 		tf_naglowek2_TwojeIP.setFont(new Font("Verdana", Font.PLAIN, 13));
 		tf_naglowek2_TwojeIP.setHorizontalAlignment(SwingConstants.CENTER);
-		tf_naglowek2_TwojeIP.setBounds(0, 48, 495, 33);
+		tf_naglowek2_TwojeIP.setBounds(100, 48, 296, 33);
 		tf_naglowek2_TwojeIP.setEditable(false);
 		p_naglowekOkna.add(tf_naglowek2_TwojeIP);
 		
@@ -177,7 +181,7 @@ public class Widok_Utworz extends JFrame {
 		p_daneGracza.add(lb_tekst_NazwaGracza);
 		
 		ImageIcon[] images;
-	    String[] nazwaAwatarow = {"awatar1", "awatar2"};
+	    String[] nazwaAwatarow = {"awatar1", "awatar2", "awatar3", "awatar4", "awatar5"};
         images = new ImageIcon[nazwaAwatarow.length];
         Integer[] intArray = new Integer[nazwaAwatarow.length];
         for (int i = 0; i < nazwaAwatarow.length; i++) {
@@ -188,7 +192,7 @@ public class Widok_Utworz extends JFrame {
         uzytkownik.przekazAwatary(images);
         
         cb_awatarGracza = new JComboBox(intArray);
-        cb_awatarGracza.setBounds(122, 40, 126, 80);
+        cb_awatarGracza.setBounds(118, 40, 131, 83);
         ComboBoxRenderer renderer= new ComboBoxRenderer(images);
         renderer.setPreferredSize(new Dimension(150, 80));
         cb_awatarGracza.setRenderer(renderer);
@@ -244,7 +248,7 @@ public class Widok_Utworz extends JFrame {
 		ftf_NazwaGracza = new JFormattedTextField(new DefaultFormatterFactory(widokUtworzZdarzenia.stworzFormat(maska)));
 		ftf_NazwaGracza.setFont(new Font("Verdana", Font.PLAIN, 11));
 		ftf_NazwaGracza.setFocusLostBehavior(JFormattedTextField.COMMIT);
-		ftf_NazwaGracza.setBounds(123, 9, 125, 20);
+		ftf_NazwaGracza.setBounds(118, 6, 130, 25);
 		p_daneGracza.add(ftf_NazwaGracza);
 		
 		

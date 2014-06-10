@@ -1,27 +1,32 @@
 package Statki;
 
-
-import java.awt.EventQueue;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Random;
+import javax.swing.*;
 
 public class Plansza {
 
 	private Statek[] l_statek;
-	public Pole[][] l_polaPlanszy;
+	public Pole[][] l_polaPlanszy_GRACZ;
+	
+	public String[][] l_polaPlanszy_GRACZ_STRZALY;
+	public String[][] l_polaPlanszy_PRZECIWNIK_STRZALY;
+
 	private int iNumerStatku;
+	public int iloscTrafionychStrzalow;
 	
 	public Plansza() {
-		l_polaPlanszy = new Pole[10][10];
+		l_polaPlanszy_GRACZ = new Pole[10][10];
+		l_polaPlanszy_GRACZ_STRZALY = new String[10][10];
+		l_polaPlanszy_PRZECIWNIK_STRZALY = new String[10][10];
 		
 		for(int i = 0;i < 10;i++)
 			for(int j = 0;j < 10;j++)
 			{
-				l_polaPlanszy[j][i] = new Pole(j, i); 
-				l_polaPlanszy[j][i].setRodzajPola("0");
+				l_polaPlanszy_GRACZ[j][i] = new Pole(j, i); 
+				l_polaPlanszy_GRACZ[j][i].setRodzajPola("0");
+				
+				l_polaPlanszy_GRACZ_STRZALY[j][i] = "0";
+				l_polaPlanszy_PRZECIWNIK_STRZALY[j][i] = "0";
 			}
 		
 		iNumerStatku = -1;
@@ -31,6 +36,35 @@ public class Plansza {
 		
 		strzalX = -1;
 		strzalY = -1;
+		
+		iloscTrafionychStrzalow = 1;
+	}
+	
+	public void zerujDanePlanszy()
+	{
+		l_polaPlanszy_GRACZ = new Pole[10][10];
+		l_polaPlanszy_GRACZ_STRZALY = new String[10][10];
+		l_polaPlanszy_PRZECIWNIK_STRZALY = new String[10][10];
+		
+		for(int i = 0;i < 10;i++)
+			for(int j = 0;j < 10;j++)
+			{
+				l_polaPlanszy_GRACZ[j][i] = new Pole(j, i); 
+				l_polaPlanszy_GRACZ[j][i].setRodzajPola("0");
+				
+				l_polaPlanszy_GRACZ_STRZALY[j][i] = "0";
+				l_polaPlanszy_PRZECIWNIK_STRZALY[j][i] = "0";
+			}
+		
+		iNumerStatku = -1;
+		l_statek = new Statek[10];
+		for(int j = 0;j < 10;j++)
+			l_statek[j] = new Statek(); 
+		
+		strzalX = -1;
+		strzalY = -1;
+		
+		iloscTrafionychStrzalow = 1;
 	}
 	
 	private int strzalX, strzalY;
@@ -43,6 +77,33 @@ public class Plansza {
 	public String getStrzalPrzeciwnika()
 	{
 		return ""+strzalX+""+strzalY;
+	}
+	
+	public boolean sprawdzStrzalPrzeciwnika(int _strzalX, int _strzalY)
+	{
+		boolean czyTrafiono = false;
+		
+		if(l_polaPlanszy_GRACZ[_strzalX][_strzalY].getRodzajPola().equals("1"))
+			czyTrafiono = true;
+		else
+			czyTrafiono = false;
+		return czyTrafiono;
+	}
+	
+	private String wynikStrzalu;
+	public void setWynikStrzalu(String _wynik)
+	{
+		wynikStrzalu = _wynik;
+	}
+	
+	public String getWynikStrzalu()
+	{
+		return wynikStrzalu;
+	}
+	
+	public Pole[][] getPlansza()
+	{
+		return l_polaPlanszy_GRACZ;
 	}
 	
 	public void rozmiescStatkiLosowo()
@@ -130,17 +191,18 @@ public class Plansza {
 			}
 		}
 		while (iloscJenomasztowcow > 0);
+
 	}
 	
 	public void czyscPlansze()
 	{
-		l_polaPlanszy = new Pole[10][10];
+		l_polaPlanszy_GRACZ = new Pole[10][10];
 		
 		for(int i = 0;i < 10;i++)
 			for(int j = 0;j < 10;j++)
 			{
-				l_polaPlanszy[j][i] = new Pole(j, i); 
-				l_polaPlanszy[j][i].setRodzajPola("0");
+				l_polaPlanszy_GRACZ[j][i] = new Pole(j, i); 
+				l_polaPlanszy_GRACZ[j][i].setRodzajPola("0");
 			}
 		
 		iNumerStatku = -1;
@@ -166,24 +228,21 @@ public class Plansza {
 		String buf_rodzajPola = "";
 		buf_sprawdzanyX = poczStatku_X;
 		buf_sprawdzanyY = poczStatku_Y;
-		
+
 		for(int k=0;k<rozmiarStatku;k++)
 		{
 			if(_pozycja.equals("poziomo") && buf_sprawdzanyX+k<10)
 			{
-				buf_sprawdzanyX+=k;
-				buf_rodzajPola = l_polaPlanszy[buf_sprawdzanyX][buf_sprawdzanyY].getRodzajPola();
+				buf_rodzajPola = l_polaPlanszy_GRACZ[buf_sprawdzanyX+k][buf_sprawdzanyY].getRodzajPola();
 			}
 					
 			if(_pozycja.equals("pionowo") && buf_sprawdzanyY+k<10)
 			{
-				buf_sprawdzanyY+=k;
-				buf_rodzajPola = l_polaPlanszy[buf_sprawdzanyX][buf_sprawdzanyY].getRodzajPola();
+				buf_rodzajPola = l_polaPlanszy_GRACZ[buf_sprawdzanyX][buf_sprawdzanyY+k].getRodzajPola();
 			}
 			
 			if(buf_rodzajPola.equals("1") || buf_rodzajPola.equals("X"))
 			{
-				System.out.println("ZLY 1");
 				wspolrzedneOK = false;
 			}
 			else
@@ -191,13 +250,14 @@ public class Plansza {
 			if(!wspolrzedneOK)
 				if(buf_rodzajPola.equals("1") || buf_rodzajPola.equals("X"))
 				{
-					System.out.println("ZLY 2");
 					wspolrzedneOK = false;
 					break;
 				}
 				else
 					wspolrzedneOK = true;
 		}
+		
+		
 		
 		return wspolrzedneOK;
 	}
@@ -233,16 +293,6 @@ public class Plansza {
 					iPoleY = poczStatku_Y;
 					zakresX = iPoleX+rozmiarStatku+1;
 					zakresY = poczStatku_Y+1;
-					
-					/*System.out.println("Ilość zab pol: "+iloscZablokowanychPol);
-					System.out.println("iPoleX: "+iPoleX);
-					System.out.println("iPoleY: "+iPoleY);
-					System.out.println("zakresX: "+zakresX);
-					System.out.println("zakresY: "+zakresY);
-					System.out.println("poczX: "+poczStatku_X);
-					System.out.println("konX: "+koniecStatku_X);
-					System.out.println("poczY: "+poczStatku_Y);
-					System.out.println("konY: "+koniecStatku_Y);*/
 				}
 				if(poczStatku_Y == 0)
 				{
@@ -268,18 +318,18 @@ public class Plansza {
 						for(int j = poczStatku_X-1;j <= zakresX;j++)
 						{
 							if((j >= poczStatku_X && j <= koniecStatku_X) && (i >= poczStatku_Y && i <= koniecStatku_Y))
-								l_polaPlanszy[j][i].setRodzajPola("1");
+								l_polaPlanszy_GRACZ[j][i].setRodzajPola("1");
 							else
-								l_polaPlanszy[j][i].setRodzajPola("X");
+								l_polaPlanszy_GRACZ[j][i].setRodzajPola("X");
 						}
 				else
 					for(int i = poczStatku_Y-1;i <= zakresY;i++)
 						for(int j = poczStatku_X-1;j <= zakresX;j++)
 						{
 							if((j >= poczStatku_X && j <= koniecStatku_X) && (i >= poczStatku_Y && i <= koniecStatku_Y))
-								l_polaPlanszy[j][i].setRodzajPola("1");
+								l_polaPlanszy_GRACZ[j][i].setRodzajPola("1");
 							else
-								l_polaPlanszy[j][i].setRodzajPola("X");
+								l_polaPlanszy_GRACZ[j][i].setRodzajPola("X");
 						}
 			}
 			if(poczStatku_X == 0)
@@ -317,18 +367,18 @@ public class Plansza {
 						for(int j = 0;j <= zakresX;j++)
 						{
 							if((j >= poczStatku_X && j <= koniecStatku_X) && (i >= poczStatku_Y && i <= koniecStatku_Y))
-								l_polaPlanszy[j][i].setRodzajPola("1");
+								l_polaPlanszy_GRACZ[j][i].setRodzajPola("1");
 							else
-								l_polaPlanszy[j][i].setRodzajPola("X");
+								l_polaPlanszy_GRACZ[j][i].setRodzajPola("X");
 						}
 				else
 					for(int i = poczStatku_Y;i <= zakresY;i++)
 						for(int j = 0;j <= zakresX;j++)
 						{
 							if((j >= poczStatku_X && j <= koniecStatku_X) && (i >= poczStatku_Y && i <= koniecStatku_Y))
-								l_polaPlanszy[j][i].setRodzajPola("1");
+								l_polaPlanszy_GRACZ[j][i].setRodzajPola("1");
 							else
-								l_polaPlanszy[j][i].setRodzajPola("X");
+								l_polaPlanszy_GRACZ[j][i].setRodzajPola("X");
 						}
 			}
 			if(koniecStatku_X == 9)
@@ -369,9 +419,9 @@ public class Plansza {
 						for(int j = poczStatku_X-1;j <= zakresX;j++)
 						{
 							if((j >= poczStatku_X && j <= koniecStatku_X) && (i >= poczStatku_Y && i <= koniecStatku_Y))
-								l_polaPlanszy[j][i].setRodzajPola("1");
+								l_polaPlanszy_GRACZ[j][i].setRodzajPola("1");
 							else
-								l_polaPlanszy[j][i].setRodzajPola("X");
+								l_polaPlanszy_GRACZ[j][i].setRodzajPola("X");
 						}
 				}
 				else
@@ -379,9 +429,9 @@ public class Plansza {
 						for(int j = poczStatku_X-1;j <= zakresX;j++)
 						{
 							if((j >= poczStatku_X && j <= koniecStatku_X) && (i >= poczStatku_Y && i <= koniecStatku_Y))
-								l_polaPlanszy[j][i].setRodzajPola("1");
+								l_polaPlanszy_GRACZ[j][i].setRodzajPola("1");
 							else
-								l_polaPlanszy[j][i].setRodzajPola("X");
+								l_polaPlanszy_GRACZ[j][i].setRodzajPola("X");
 						}
 			}
 		}
@@ -425,18 +475,18 @@ public class Plansza {
 						for(int j = poczStatku_X-1;j <= zakresX;j++)
 						{
 							if((j >= poczStatku_X && j <= koniecStatku_X) && (i >= poczStatku_Y && i <= koniecStatku_Y))
-								l_polaPlanszy[j][i].setRodzajPola("1");
+								l_polaPlanszy_GRACZ[j][i].setRodzajPola("1");
 							else
-								l_polaPlanszy[j][i].setRodzajPola("X");
+								l_polaPlanszy_GRACZ[j][i].setRodzajPola("X");
 						}
 				else
 					for(int i = poczStatku_Y-1;i <= zakresY;i++)
 						for(int j = poczStatku_X;j <= zakresX;j++)
 						{
 							if((j >= poczStatku_X && j <= koniecStatku_X) && (i >= poczStatku_Y && i <= koniecStatku_Y))
-								l_polaPlanszy[j][i].setRodzajPola("1");
+								l_polaPlanszy_GRACZ[j][i].setRodzajPola("1");
 							else
-								l_polaPlanszy[j][i].setRodzajPola("X");
+								l_polaPlanszy_GRACZ[j][i].setRodzajPola("X");
 						}
 			}
 			if(poczStatku_Y == 0)
@@ -474,27 +524,27 @@ public class Plansza {
 						for(int j = poczStatku_X-1;j <= zakresX;j++)
 						{
 							if((j >= poczStatku_X && j <= koniecStatku_X) && (i >= poczStatku_Y && i <= koniecStatku_Y))
-								l_polaPlanszy[j][i].setRodzajPola("1");
+								l_polaPlanszy_GRACZ[j][i].setRodzajPola("1");
 							else
-								l_polaPlanszy[j][i].setRodzajPola("X");
+								l_polaPlanszy_GRACZ[j][i].setRodzajPola("X");
 						}
 				else if(poczStatku_X != 0)
 					for(int i = poczStatku_Y;i <= zakresY;i++)
 						for(int j = poczStatku_X-1;j <= zakresX;j++)
 						{
 							if((j >= poczStatku_X && j <= koniecStatku_X) && (i >= poczStatku_Y && i <= koniecStatku_Y))
-								l_polaPlanszy[j][i].setRodzajPola("1");
+								l_polaPlanszy_GRACZ[j][i].setRodzajPola("1");
 							else
-								l_polaPlanszy[j][i].setRodzajPola("X");
+								l_polaPlanszy_GRACZ[j][i].setRodzajPola("X");
 						}
 				else
 					for(int i = poczStatku_Y;i <= zakresY;i++)
 						for(int j = poczStatku_X;j <= zakresX;j++)
 						{
 							if((j >= poczStatku_X && j <= koniecStatku_X) && (i >= poczStatku_Y && i <= koniecStatku_Y))
-								l_polaPlanszy[j][i].setRodzajPola("1");
+								l_polaPlanszy_GRACZ[j][i].setRodzajPola("1");
 							else
-								l_polaPlanszy[j][i].setRodzajPola("X");
+								l_polaPlanszy_GRACZ[j][i].setRodzajPola("X");
 						}
 			}
 			if(koniecStatku_Y == 9)
@@ -537,9 +587,9 @@ public class Plansza {
 						for(int j = poczStatku_X;j <= zakresX;j++)
 						{
 							if((j >= poczStatku_X && j <= koniecStatku_X) && (i >= poczStatku_Y && i <= koniecStatku_Y))
-								l_polaPlanszy[j][i].setRodzajPola("1");
+								l_polaPlanszy_GRACZ[j][i].setRodzajPola("1");
 							else
-								l_polaPlanszy[j][i].setRodzajPola("X");
+								l_polaPlanszy_GRACZ[j][i].setRodzajPola("X");
 						}
 				}
 				else if(poczStatku_X != 0)
@@ -549,9 +599,9 @@ public class Plansza {
 						for(int j = poczStatku_X-1;j <= zakresX;j++)
 						{
 							if((j >= poczStatku_X && j <= koniecStatku_X) && (i >= poczStatku_Y && i <= koniecStatku_Y))
-								l_polaPlanszy[j][i].setRodzajPola("1");
+								l_polaPlanszy_GRACZ[j][i].setRodzajPola("1");
 							else
-								l_polaPlanszy[j][i].setRodzajPola("X");
+								l_polaPlanszy_GRACZ[j][i].setRodzajPola("X");
 						}
 				}
 				else
@@ -559,9 +609,9 @@ public class Plansza {
 						for(int j = poczStatku_X;j <= zakresX;j++)
 						{
 							if((j >= poczStatku_X && j <= koniecStatku_X) && (i >= poczStatku_Y && i <= koniecStatku_Y))
-								l_polaPlanszy[j][i].setRodzajPola("1");
+								l_polaPlanszy_GRACZ[j][i].setRodzajPola("1");
 							else
-								l_polaPlanszy[j][i].setRodzajPola("X");
+								l_polaPlanszy_GRACZ[j][i].setRodzajPola("X");
 						}
 			}
 		}
@@ -596,7 +646,6 @@ public class Plansza {
 		System.out.println("Rozmiar: "+_rozmiarStatku);
 		System.out.println("Statek: "+_pozycja);
 		System.out.println("CzyOK: "+czyUstawionoStatek);
-		//return czyUstawionoStatek;
 	}
 	
 	public int[] getLiczbaStatkow()

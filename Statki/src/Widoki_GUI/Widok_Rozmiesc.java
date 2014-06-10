@@ -1,36 +1,15 @@
 package Widoki_GUI;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Toolkit;
-import java.awt.geom.Dimension2D;
+import java.awt.*;
+import java.awt.event.*;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.UIManager;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JSeparator;
-import javax.swing.JLabel;
-
-import java.awt.Font;
-
-import javax.swing.SwingConstants;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
+import javax.swing.*;
+import javax.swing.border.*;
 
 import Statki.Gracz;
 import Statki.Host;
 import Statki.Uzytkownik;
 import Widoki_Zdarzenia.Widok_Rozmiesc_Zdarzenia;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class Widok_Rozmiesc extends JFrame {
 
@@ -59,8 +38,8 @@ public class Widok_Rozmiesc extends JFrame {
 	public JButton btn_RozpocznijRozgrywke;
 	
 	public JPanel p_polaGry;
-	public JPanel p_Litery;
-	public JPanel p_Cyfry;
+	
+	private ImageIcon img_tloPlanszy = new ImageIcon(getClass().getResource("/plansza/plansza220x220/plansza.png"));
 
 	/**
 	 * Launch the application.
@@ -79,6 +58,8 @@ public class Widok_Rozmiesc extends JFrame {
 	}
 
 	public String typUsera;
+	public JLabel lblRozmieszczenie;
+	public JLabel lblStatek;
 	public Widok_Rozmiesc(Widok_Glowny _widokGlowny, Host _host, Gracz _gracz, Uzytkownik _uzytkownik) {
 		
 		widokGlowny = _widokGlowny;
@@ -90,12 +71,14 @@ public class Widok_Rozmiesc extends JFrame {
 	
 		setTitle("Statki v.1.0 Beta | SkyGames - rozmieszczenie statków");
 		setResizable(false);
-		try {
+		/*try {
 		      UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		    } catch (Exception e) {
 		      e.printStackTrace();
-		    }
+		    }*/
 		
+		try {UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");}
+		catch(Exception e) {}
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setSize(520, 430);
@@ -163,28 +146,32 @@ public class Widok_Rozmiesc extends JFrame {
 		p_naglowek.add(lb_naglowek);
 		
 		JPanel p_rodzajeStatkow = new JPanel();
-		p_rodzajeStatkow.setBounds(257, 67, 248, 237);
+		p_rodzajeStatkow.setBounds(248, 67, 257, 237);
 		contentPane.add(p_rodzajeStatkow);
 		p_rodzajeStatkow.setLayout(null);
 		
-		JLabel lblStatek = new JLabel("Statek:");
+		lblStatek = new JLabel("Statek");
+		lblStatek.setHorizontalAlignment(SwingConstants.CENTER);
 		lblStatek.setFont(new Font("Verdana", Font.PLAIN, 11));
-		lblStatek.setBounds(10, 11, 103, 17);
+		lblStatek.setBounds(63, 10, 139, 17);
 		p_rodzajeStatkow.add(lblStatek);
 		
 		cb_RodzajStatku = new JComboBox();
-		cb_RodzajStatku.setModel(new DefaultComboBoxModel(new String[] {"", "jednomasztowiec", "dwumasztowiec", "trójmasztowiec", "czteromasztowiec"}));
-		cb_RodzajStatku.setBounds(123, 10, 115, 20);
+		cb_RodzajStatku.setModel(new DefaultComboBoxModel(new String[] {"jednomasztowiec", "dwumasztowiec", "trójmasztowiec", "czteromasztowiec"}));
+		cb_RodzajStatku.setBounds(45, 30, 175, 25);
 		p_rodzajeStatkow.add(cb_RodzajStatku);
 		
-		JLabel lblRozmieszczenie = new JLabel("Rozmieszczenie:");
+		lblRozmieszczenie = new JLabel("Rozmieszczenie");
+		lblRozmieszczenie.setHorizontalAlignment(SwingConstants.CENTER);
+		lblRozmieszczenie.setVisible(false);
 		lblRozmieszczenie.setFont(new Font("Verdana", Font.PLAIN, 11));
-		lblRozmieszczenie.setBounds(10, 57, 103, 17);
+		lblRozmieszczenie.setBounds(63, 65, 139, 17);
 		p_rodzajeStatkow.add(lblRozmieszczenie);
 		
 		cb_Rozmieszczenie = new JComboBox();
-		cb_Rozmieszczenie.setModel(new DefaultComboBoxModel(new String[] {"", "pionowo", "poziomo"}));
-		cb_Rozmieszczenie.setBounds(123, 54, 115, 20);
+		cb_Rozmieszczenie.setVisible(false);
+		cb_Rozmieszczenie.setModel(new DefaultComboBoxModel(new String[] {"pionowo", "poziomo"}));
+		cb_Rozmieszczenie.setBounds(45, 85, 175, 25);
 		p_rodzajeStatkow.add(cb_Rozmieszczenie);
 		
 		btn_RozmiescLosowo = new JButton("Rozmieść losowo");
@@ -193,20 +180,21 @@ public class Widok_Rozmiesc extends JFrame {
 			}
 		});
 		btn_RozmiescLosowo.setFont(new Font("Verdana", Font.BOLD, 10));
-		btn_RozmiescLosowo.setBounds(40, 130, 175, 30);
+		btn_RozmiescLosowo.setBounds(45, 130, 175, 30);
 		p_rodzajeStatkow.add(btn_RozmiescLosowo);
 		
 		btn_WyczyscPlansze = new JButton("Wyczyść plansze");
 		btn_WyczyscPlansze.setFont(new Font("Verdana", Font.BOLD, 10));
-		btn_WyczyscPlansze.setBounds(40, 170, 175, 30);
+		btn_WyczyscPlansze.setBounds(45, 170, 175, 30);
 		p_rodzajeStatkow.add(btn_WyczyscPlansze);
 		
 		JPanel p_przyciskRozpocznijRozgrywke = new JPanel();
-		p_przyciskRozpocznijRozgrywke.setBounds(257, 315, 248, 55);
+		p_przyciskRozpocznijRozgrywke.setBounds(248, 315, 257, 55);
 		contentPane.add(p_przyciskRozpocznijRozgrywke);
 		p_przyciskRozpocznijRozgrywke.setLayout(new BorderLayout(0, 0));
 		
 		btn_RozpocznijRozgrywke = new JButton("Rozpocznij rozgrywkę");
+		btn_RozpocznijRozgrywke.setEnabled(false);
 		btn_RozpocznijRozgrywke.setFont(new Font("Verdana", Font.BOLD, 15));
 		p_przyciskRozpocznijRozgrywke.add(btn_RozpocznijRozgrywke, BorderLayout.CENTER);
 		
@@ -216,22 +204,20 @@ public class Widok_Rozmiesc extends JFrame {
 		p_rozmieszczenieStatkow.setLayout(null);
 		
 		p_polaGry = new JPanel();
-		p_polaGry.setBounds(25, 25, 200, 200);
+		p_polaGry.setBorder(null);
+		p_polaGry.setBounds(10, 11, 219, 220);
 		p_rozmieszczenieStatkow.add(p_polaGry);
 		
-		p_Litery = new JPanel();
-		p_Litery.setBounds(0, 25, 25, 200);
-		p_rozmieszczenieStatkow.add(p_Litery);
-		p_Litery.setLayout(null);
-		
-		p_Cyfry = new JPanel();
-		p_Cyfry.setBounds(25, 1, 200, 24);
-		p_rozmieszczenieStatkow.add(p_Cyfry);
-		
 		widokRozmiescZdarzenia = new Widok_Rozmiesc_Zdarzenia(this);
-		widokRozmiescZdarzenia.stworzPolaGry(p_polaGry, p_Litery, p_Cyfry);
-		p_Cyfry.setLayout(null);
 		p_polaGry.setLayout(null);
+		
+		widokRozmiescZdarzenia.stworzPolaGry(p_polaGry, null, null);
+		
+		JLabel lb_tloPlanszy = new JLabel(img_tloPlanszy);
+		lb_tloPlanszy.setBounds(0, 0, 218, 220);
+		p_polaGry.add(lb_tloPlanszy);
+		
+		widokRozmiescZdarzenia.przerysujPlansze();
 		
 		//widokGry = new Widok_Gry(widokGlowny, host, gracz, widokRozmiescZdarzenia.getUzytkownik());
 	}
