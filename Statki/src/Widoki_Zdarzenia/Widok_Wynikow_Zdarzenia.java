@@ -374,7 +374,7 @@ public class Widok_Wynikow_Zdarzenia implements ActionListener, WindowListener, 
 		boolean b_odpowiedz = false;
 		
 		Object[] opcje = {"Tak","Nie"};
-		int odpowiedz = JOptionPane.showOptionDialog(widokWynikow, "Przecownik proponuje rewanż. Zgadzasz się?",
+		int odpowiedz = JOptionPane.showOptionDialog(widokWynikow, "Przeciwnik proponuje rewanż. Zgadzasz się?",
 		"Statki", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
 		null, opcje, opcje[0]); 
 		
@@ -386,6 +386,7 @@ public class Widok_Wynikow_Zdarzenia implements ActionListener, WindowListener, 
 				widokWynikow.setVisible(false);
 				//zacznijGreOdNowa();
     			widokWynikow.widokGry.widokGlowny.setVisible(true);
+				//widokWynikow.widokGry.widokGlowny.widokDolacz.widokRozmiesc.setVisible(true);
 			}
 			if(host != null)
 			{
@@ -393,6 +394,7 @@ public class Widok_Wynikow_Zdarzenia implements ActionListener, WindowListener, 
 				widokWynikow.setVisible(false);
 				//zacznijGreOdNowa();
     			widokWynikow.widokGry.widokGlowny.setVisible(true);
+				//widokWynikow.widokGry.widokGlowny.widokUtworz.widokRozmiesc.setVisible(true);
 			}
 		}
 		else
