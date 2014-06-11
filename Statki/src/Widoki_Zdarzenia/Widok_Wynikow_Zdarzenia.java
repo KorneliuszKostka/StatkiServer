@@ -23,6 +23,7 @@ import javax.swing.SwingConstants;
 
 import Statki.Gracz;
 import Statki.Host;
+import Statki.Pole;
 import Statki.Uzytkownik;
 import Widoki_GUI.Widok_Wynikow;
 
@@ -385,6 +386,16 @@ public class Widok_Wynikow_Zdarzenia implements ActionListener, WindowListener, 
 				gracz.wyslijWiadomosc("true", "#OR#");
 				widokWynikow.setVisible(false);
 				//zacznijGreOdNowa();
+		lb_polaGry_GRACZ=null;
+		lb_polaGry_PRZECIWNIK=null;
+				gracz.planszaGracza=null;
+				gracz.planszaPrzeciwnika=null;
+				gracz.iloscTrafionychHOST=0;
+				gracz.uzytkownik.plansza.zerujDanePlanszy();
+				gracz.uzytkownik.plansza.l_polaPlanszy_GRACZ=null;
+				gracz.uzytkownik.plansza.l_polaPlanszy_GRACZ_STRZALY=null;
+				gracz.uzytkownik.plansza.l_polaPlanszy_PRZECIWNIK_STRZALY=null;
+				
     			widokWynikow.widokGry.widokGlowny.setVisible(true);
 				//widokWynikow.widokGry.widokGlowny.widokDolacz.widokRozmiesc.setVisible(true);
 			}
@@ -393,8 +404,19 @@ public class Widok_Wynikow_Zdarzenia implements ActionListener, WindowListener, 
 				host.wyslijWiadomosc("true", "#OR#");
 				widokWynikow.setVisible(false);
 				//zacznijGreOdNowa();
+				host.planszaGracza=null;
+				host.planszaPrzeciwnika=null;
+				host.iloscTrafionychGRACZ=0;
+				host.uzytkownik.plansza.zerujDanePlanszy();
+				host.uzytkownik.plansza.l_polaPlanszy_GRACZ=null;
+				host.uzytkownik.plansza.l_polaPlanszy_GRACZ_STRZALY=null;
+				host.uzytkownik.plansza.l_polaPlanszy_PRZECIWNIK_STRZALY=null;
+				lb_polaGry_GRACZ=null;
+				lb_polaGry_PRZECIWNIK=null;
+				
     			widokWynikow.widokGry.widokGlowny.setVisible(true);
 				//widokWynikow.widokGry.widokGlowny.widokUtworz.widokRozmiesc.setVisible(true);
+    			widokWynikow.widokGry.widokGlowny.setVisible(true);
 			}
 		}
 		else
