@@ -253,10 +253,10 @@ public class Widok_Dolacz extends JFrame {
 		widokDolaczZdarzenia = new Widok_Dolacz_Zdarzenia(this, uzytkownik.getGracz());
 		
 		String maska = "";
-		//maska = "###.###.###.###";
+		maska = "###.###.###.###";
 		ftf_IpSerwera = new JFormattedTextField();
-		ftf_IpSerwera.setText("192.168.2.10");
-		//ftf_IpSerwera.setFormatterFactory(new DefaultFormatterFactory(widokDolaczZdarzenia.stworzFormat(maska)));
+		//ftf_IpSerwera.setText("192.168.2.10");
+		ftf_IpSerwera.setFormatterFactory(new DefaultFormatterFactory(widokDolaczZdarzenia.stworzFormat(maska)));
 		ftf_IpSerwera.setFocusLostBehavior(JFormattedTextField.COMMIT);
 		ftf_IpSerwera.setBounds(110, 8, 125, 25);
 		p_daneSerwerUzytkownik.add(ftf_IpSerwera);
