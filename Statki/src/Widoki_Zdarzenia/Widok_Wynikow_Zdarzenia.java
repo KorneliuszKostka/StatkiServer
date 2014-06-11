@@ -386,8 +386,8 @@ public class Widok_Wynikow_Zdarzenia implements ActionListener, WindowListener, 
 				gracz.wyslijWiadomosc("true", "#OR#");
 				widokWynikow.setVisible(false);
 				//zacznijGreOdNowa();
-		lb_polaGry_GRACZ=null;
-		lb_polaGry_PRZECIWNIK=null;
+				lb_polaGry_GRACZ=null;
+				lb_polaGry_PRZECIWNIK=null;
 				gracz.planszaGracza=null;
 				gracz.planszaPrzeciwnika=null;
 				gracz.iloscTrafionychHOST=0;
